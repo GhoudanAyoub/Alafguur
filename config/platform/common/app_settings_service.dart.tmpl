@@ -1,0 +1,477 @@
+import 'package:flutter/widgets.dart';
+
+///////////////////////
+///
+/// DON'T MODIFY THIS FILE MANUALLY!!!
+/// ANY CHANGES MUST BE APPLIED BOTH IN THE `application.config.tmpl` AND `application.config`
+/// AND FINALLY THE `app.sh prepare` COMMAND MUST BE CALLED IN ORDER TO REBUILD THIS FILE.
+///
+///////////////////////
+
+class AppSettingsService {
+   static const String buildName = '__build_name__';
+   static const String bundleName = '__bundle_name__';
+   static const String version = '__version__';
+   static const String versionBuild = '__version_build__';
+   static const String release = '$bundleName@$version+$versionBuild';
+   static const bool debugMode = __debug_mode__;
+
+   // api
+   static const String apiProtocol = '__api_protocol__';
+   static const String apiDomain = '__api_domain__';
+   static const String apiUri = '__api_uri__';
+
+   static Uri get apiUrl => apiProtocol == 'https'
+         ? Uri.https(apiDomain, apiUri)
+         : Uri.http(apiDomain, apiUri);
+
+   // Logger
+   static const String loggerType = '__logger_type__';
+
+   // Sentry
+   static const String sentryDsn = '__sentry_dsn__';
+   static bool get canUseSentry => loggerType == 'sentry' && sentryDsn.isNotEmpty;
+
+   // social auth 
+   static const String socialAuthTwitterConsumerKey = '__social_auth_twitter_consumer_key___';
+   static const String socialAuthTwitterConsumerSecret = '__social_auth_twitter_consumer_secret___';
+   static const String socialAuthAppleClientId = '__social_auth_apple_client_id__';
+   static const String socialAuthAppleAndroidRedirect = '__social_auth_apple_android_redirect__';
+
+   // app
+   static const String appName = '__app_name___';
+   static const String vapidKey = '__vapid_key__';
+
+   // pwa firebase 
+   static const String pwaFirebaseApiKey = '__pwa_firebase_api_key___';
+   static const String pwaFirebaseAuthDomain = '__pwa_firebase_auth_domain___';
+   static const String pwaFirebaseProjectId = '__pwa_firebase_project_id___';
+   static const String pwaFirebaseStorageBucket = '__pwa_firebase_storage_bucket___';
+   static const String pwaFirebaseMessagingSenderId = '__pwa_firebase_messaging_sender_id___';
+   static const String pwaFirebaseAnalyticsMeasurementId = '__pwa_firebase_analytics_measurement_id__';
+   static const bool pwaFirebaseIsAnalyticsEnabled = __pwa_is_firebase_analytics_enabled__;
+   static const String pwaFirebaseAppId = '__pwa_firebase_app_id___';
+
+   // admob
+   static const String admobAndroidAppId = '__admob_android_app_id__';
+   static const String admobIosAppId = '__admob_ios_app_id__';
+
+   // theme
+   static setDarkMode(bool isDark) {
+      if (isChangingDarkModeAllowed) {
+         isDarkMode = isDark;
+      }
+   }
+
+   static bool isChangingDarkModeAllowed = true;
+   static bool isDarkMode = false;
+
+   static Color get themeCommonHardcodedWhiteColor =>
+      Color(__theme_common_hardcoded_white_color__);
+
+   static Color get themeCommonHardcodedBlackColor =>
+      Color(__theme_common_hardcoded_black_color__);
+
+   static Color get themeCommonDangerousColor =>
+      isDarkMode ? Color(__theme_common_dangerous_color_dark__) : Color(__theme_common_dangerous_color__);
+
+   static Color get themeCommonWarningColor =>
+      isDarkMode ? Color(__theme_common_warning_color_dark__) : Color(__theme_common_warning_color__);
+
+   static Color get themeCommonSystemIconColor =>
+      isDarkMode ? Color(__theme_common_system_icon_color_dark__) : Color(__theme_common_system_icon_color__);
+
+   static Color get themeCommonAlertIconColor =>
+      isDarkMode ? Color(__theme_common_alert_icon_color_dark__) : Color(__theme_common_alert_icon_color__);
+
+   static Color get themeCommonSuccessIconColor =>
+      isDarkMode ? Color(__theme_common_success_icon_color_dark__) : Color(__theme_common_success_icon_color__);
+
+   static Color get themeCommonPendingIconColor =>
+      isDarkMode ? Color(__theme_common_pending_icon_color_dark__) : Color(__theme_common_pending_icon_color__);
+
+   static Color get themeCommonTextColor =>
+      isDarkMode ? Color(__theme_common_text_color_dark__) : Color(__theme_common_text_color__);
+
+   static Color get themeCommonAccentColor =>
+      isDarkMode ? Color(__theme_common_accent_color_dark__) : Color(__theme_common_accent_color__);
+
+   static Color get themeCommonGradientStartColor =>
+      isDarkMode ? Color(__theme_common_gradient_start_color_dark__) : Color(__theme_common_gradient_start_color__);
+
+   static Color get themeCommonGradientEndColor =>
+      isDarkMode ? Color(__theme_common_gradient_end_color_dark__) : Color(__theme_common_gradient_end_color__);
+
+   static Color get themeCommonIconLightColor =>
+      isDarkMode ? Color(__theme_common_icon_light_color_dark__) : Color(__theme_common_icon_light_color__);
+
+   static Color get themeCommonSkeletonColor =>
+      isDarkMode ? Color(__theme_common_skeleton_color_dark__) : Color(__theme_common_skeleton_color__);
+
+   static Color get themeCommonSkeletonLightColor =>
+      isDarkMode ? Color(__theme_common_skeleton_light_color_dark__) : Color(__theme_common_skeleton_light_color__);
+
+   static Color get themeCommonScaffoldDefaultColor =>
+      isDarkMode ? Color(__theme_common_scaffold_default_color_dark__) : Color(__theme_common_scaffold_default_color__);
+
+   static Color get themeCommonScaffoldLightColor =>
+      isDarkMode ? Color(__theme_common_scaffold_light_color_dark__) : Color(__theme_common_scaffold_light_color__);
+
+   static Color get themeCommonScaffoldBarColor =>
+      isDarkMode ? Color(__theme_common_scaffold_bar_color_dark__) : Color(__theme_common_scaffold_bar_color__);
+
+   static Color get themeCommonAppBarBorderColor =>
+      isDarkMode ? Color(__theme_common_app_bar_border_color_dark__) : Color(__theme_common_app_bar_border_color__);
+
+   static Color get themeCommonInputTextBackgroundColor =>
+      isDarkMode ? Color(__theme_common_input_text_background_color_dark__) : Color(__theme_common_input_text_background_color__);
+
+   static Color get themeCommonFormTextColor =>
+      isDarkMode ? Color(__theme_common_form_text_color_dark__) : Color(__theme_common_form_text_color__);
+
+   static Color get themeCommonFormPlaceholderColor =>
+      isDarkMode ? Color(__theme_common_form_placeholder_color_dark__) : Color(__theme_common_form_placeholder_color__);
+
+   static Color get themeCommonFormValueColor =>
+      isDarkMode ? Color(__theme_common_form_value_color_dark__) : Color(__theme_common_form_value_color__);
+
+   static Color get themeCommonFormLabelColor =>
+      isDarkMode ? Color(__theme_common_form_label_color_dark__) : Color(__theme_common_form_label_color__);
+   
+   static Color get themeCommonFormSectionColor =>
+      isDarkMode ? Color(__theme_common_form_section_color_dark__) : Color(__theme_common_form_section_color__);
+
+   static Color get themeCommonSegmentedControlTextColor =>
+      isDarkMode ? Color(__theme_common_segmented_control_text_color_dark__) : Color(__theme_common_segmented_control_text_color__);
+
+   static Color get themeCommonAlertPassiveIconColor =>
+      isDarkMode ? Color(__theme_common_alert_passive_icon_color_dark__) : Color(__theme_common_alert_passive_icon_color__);
+
+   static Color get themeCommonDividerColor =>
+      isDarkMode ? Color(__theme_common_divider_color_dark__) : Color(__theme_common_divider_color__);
+
+   static Color get themeCommonInfoItemLabelColor =>
+      isDarkMode ? Color(__theme_common_info_item_label_color_dark__) : Color(__theme_common_info_item_label_color__);
+
+   static Color get themeCommonInfoItemValueColor =>
+      isDarkMode ? Color(__theme_common_info_item_value_color_dark__) : Color(__theme_common_info_item_value_color__);
+
+   static Color get themeCommonSelectArrowColor =>
+      isDarkMode ? Color(__theme_common_select_arrow_color_dark__) : Color(__theme_common_select_arrow_color__);
+
+   static Color get themeCommonUserListItemRowHighlightColor =>
+      isDarkMode ? Color(__theme_common_user_list_item_row_highlight_color_dark__) : Color(__theme_common_user_list_item_row_highlight_color__);
+
+   static Color get themeCommonUserCardOnlineColor =>
+      isDarkMode ? Color(__theme_common_user_card_online_color_dark__) : Color(__theme_common_user_card_online_color__);
+
+   static Color get themeCommonUserCardDistanceColor =>
+      isDarkMode ? Color(__theme_common_user_card_distance_color_dark__) : Color(__theme_common_user_card_distance_color__);
+
+   static Color get themeCommonBlankDescrColor =>
+      isDarkMode ? Color(__theme_common_blank_descr_color_dark__) : Color(__theme_common_blank_descr_color__);
+
+   static Color get themeCommonBlankTitleColor =>
+      isDarkMode ? Color(__theme_common_blank_title_color_dark__) : Color(__theme_common_blank_title_color__);
+
+   static Color get themeCommonLoginFormInputBackgroundColor =>
+      isDarkMode ? Color(__theme_common_login_form_input_background_color_dark__) : Color(__theme_common_login_form_input_background_color__);
+
+   static Color get themeCommonLoginFormTextColor =>
+      isDarkMode ? Color(__theme_common_login_form_text_color_dark__) : Color(__theme_common_login_form_text_color__);
+
+   static Color get themeCommonLoginFormPlaceholderColor =>
+      isDarkMode ? Color(__theme_common_login_form_placeholder_color_dark__) : Color(__theme_common_login_form_placeholder_color__);
+
+   static Color get themeCommonLoginFirebaseLabelColor =>
+      isDarkMode ? Color(__theme_common_login_firebase_label_color_dark__) : Color(__theme_common_login_firebase_label_color__);
+
+   static Color get themeCommonLoginFirebaseDividerColor =>
+      isDarkMode ? Color(__theme_common_login_firebase_divider_color_dark__) : Color(__theme_common_login_firebase_divider_color__);
+
+   static Color get themeCommonLoginInlineButtonColor =>
+      isDarkMode ? Color(__theme_common_login_inline_button_color_dark__) : Color(__theme_common_login_inline_button_color__);
+
+   static Color get themeCommonLoginButtonColor =>
+      isDarkMode ? Color(__theme_common_login_button_color_dark__) : Color(__theme_common_login_button_color__);
+
+   static Color get themeCommonLoginFirebaseFacebookIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_login_firebase_facebook_icon_background_color_dark__) : Color(__theme_common_login_firebase_facebook_icon_background_color__);
+
+   static Color get themeCommonLoginFirebaseGoogleIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_login_firebase_google_icon_background_color_dark__) : Color(__theme_common_login_firebase_google_icon_background_color__);
+
+   static Color get themeCommonLoginFirebaseTwitterIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_login_firebase_twitter_icon_background_color_dark__) : Color(__theme_common_login_firebase_twitter_icon_background_color__);
+
+   static Color get themeCommonLoginFirebaseAppleIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_login_firebase_apple_icon_background_color_dark__) : Color(__theme_common_login_firebase_apple_icon_background_color__);
+
+   static Color get themeCommonDashboardProfileUserNameColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_user_name_color_dark__) : Color(__theme_common_dashboard_profile_user_name_color__);
+
+   static Color get themeCommonDashboardProfileUserDescColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_user_desc_color_dark__) : Color(__theme_common_dashboard_profile_user_desc_color__);
+
+   static Color get themeCommonDashboardProfileButtonBorderColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_button_border_color_dark__) : Color(__theme_common_dashboard_profile_button_border_color__);
+
+   static Color get themeCommonDashboardProfileLinkColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_link_color_dark__) : Color(__theme_common_dashboard_profile_link_color__);
+
+   static Color get themeCommonDashboardProfileGuideBackgroundColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_guide_background_color_dark__) : Color(__theme_common_dashboard_profile_guide_background_color__);
+
+   static Color get themeCommonDashboardProfileGuideColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_guide_color_dark__) : Color(__theme_common_dashboard_profile_guide_color__);
+
+   static Color get themeCommonDashboardProfileNotificationBackgroundColor =>
+      isDarkMode ? Color(__theme_common_dashboard_profile_notification_background_color_dark__) : Color(__theme_common_dashboard_profile_notification_background_color__);
+
+   static Color get themeCommonDashboardMenuWidgetPassiveIconColor =>
+      isDarkMode ? Color(__theme_common_dashboard_menu_widget_passive_icon_color_dark__) : Color(__theme_common_dashboard_menu_widget_passive_icon_color__);
+   
+   static Color get themeCommonDashboardMenuWidgetBorderColor =>
+      isDarkMode ? Color(__theme_common_dashboard_menu_widget_border_color_dark__) : Color(__theme_common_dashboard_menu_widget_border_color__);
+
+   static Color get themeCommonEditPhotoSlotBackgroundColor =>
+      isDarkMode ? Color(__theme_common_edit_photo_slot_background_color_dark__) : Color(__theme_common_edit_photo_slot_background_color__);
+
+   static Color get themeCommonEditPhotoExtraSlotIconColor =>
+      isDarkMode ? Color(__theme_common_edit_photo_extra_slot_icon_color_dark__) : Color(__theme_common_edit_photo_extra_slot_icon_color__);
+
+   static Color get themeCommonEditPhotoApprovalTextColor =>
+      isDarkMode ? Color(__theme_common_edit_photo_approval_text_color_dark__) : Color(__theme_common_edit_photo_approval_text_color__);
+
+   static Color get themeCommonHotListEmptyTextColor =>
+      isDarkMode ? Color(__theme_common_hot_list_empty_text_color_dark__) : Color(__theme_common_hot_list_empty_text_color__);
+
+   static Color get themeCommonHotListBackgroundColor =>
+      isDarkMode ? Color(__theme_common_hot_list_background_color_dark__) : Color(__theme_common_hot_list_background_color__);
+
+     static Color get themeCommonDashboardTinderActionToolbarWidgetSmallIconBorderColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_action_toolbar_widget_small_icon_border_color_dark__) : Color(__theme_common_dashboard_tinder_action_toolbar_widget_small_icon_border_color__);
+
+   static Color get themeCommonDashboardTinderActionToolbarWidgetSmallIconColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_action_toolbar_widget_small_icon_color_dark__) : Color(__theme_common_dashboard_tinder_action_toolbar_widget_small_icon_color__);
+
+   static Color get themeCommonDashboardTinderActionToolbarWidgetRewindIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_action_toolbar_widget_rewind_icon_background_color_dark__) : Color(__theme_common_dashboard_tinder_action_toolbar_widget_rewind_icon_background_color__);
+
+   static Color get themeCommonDashboardTinderUserCardWidgetFiltersBackgroundColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_filters_background_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_filters_background_color__);
+
+   static Color get themeCommonDashboardTinderUseCardWidgetFiltersBorderColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_filters_border_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_filters_border_color__);
+
+   static Color get themeCommonDashboardTinderUserCardWidgetSwipeTextColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_swipe_text_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_swipe_text_color__);
+
+   static Color get themeCommonDashboardTinderUserCardWidgetSwipeBorderColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_swipe_border_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_swipe_border_color__);
+
+   static Color get themeCommonDashboardTinderUserCardWidgetSwipeLikeBackgroundColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_swipe_like_background_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_swipe_like_background_color__);
+
+   static Color get themeCommonDashboardTinderUserCardWidgetSwipeDislikeBackgroundColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_swipe_dislike_background_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_swipe_dislike_background_color__);
+
+   static Color get themeCommonDashboardTinderUserCardWidgetDistanceColor =>
+      isDarkMode ? Color(__theme_common_dashboard_tinder_user_card_widget_distance_color_dark__) : Color(__theme_common_dashboard_tinder_user_card_widget_distance_color__);
+
+   static Color get themeCommonSearchFieldIconsColor =>
+      isDarkMode ? Color(__theme_common_search_field_icons_color_dark__) : Color(__theme_common_search_field_icons_color__);
+
+   static Color get themeCommonSearchFieldBackgroundColor =>
+      isDarkMode ? Color(__theme_common_search_field_background_color_dark__) : Color(__theme_common_search_field_background_color__);
+
+   static Color get themeCommonMatchedUserBackgroundGradientStartColor =>
+      isDarkMode ? Color(__theme_common_matched_user_background_gradient_start_color_dark__) : Color(__theme_common_matched_user_background_gradient_start_color__);
+
+   static Color get themeCommonMatchedUserBackgroundGradientEndColor =>
+      isDarkMode ? Color(__theme_common_matched_user_background_gradient_end_color_dark__) : Color(__theme_common_matched_user_background_gradient_end_color__);
+
+   static Color get themeCommonMatchedUserHeaderTextColor =>
+      isDarkMode ? Color(__theme_common_matched_user_header_text_color_dark__) : Color(__theme_common_matched_user_header_text_color__);
+
+   static Color get themeCommonMatchedUserDescColor =>
+      isDarkMode ? Color(__theme_common_matched_user_desc_text_color_dark__) : Color(__theme_common_matched_user_desc_text_color__);
+
+   static Color get themeCommonMatchedUserButtonTextColor =>
+      isDarkMode ? Color(__theme_common_matched_user_button_text_color_dark__) : Color(__theme_common_matched_user_button_text_color__);
+
+   static Color get themeCommonMatchedUserButtonBorderColor =>
+      isDarkMode ? Color(__theme_common_matched_user_button_border_color_dark__) : Color(__theme_common_matched_user_button_border_color__);
+
+   static Color get themeCommonProfileActionToolbarWrapperBackgroundColor =>
+      isDarkMode ? Color(__theme_common_profile_action_toolbar_wrapper_background_color_dark__) : Color(__theme_common_profile_action_toolbar_wrapper_background_color__);
+
+   static Color get themeCommonProfileActionToolbarWrapperShadowColor =>
+      isDarkMode ? Color(__theme_common_profile_action_toolbar_wrapper_shadow_color_dark__) : Color(__theme_common_profile_action_toolbar_wrapper_shadow_color__);
+
+   static Color get themeCommonProfileInfoMoreIconColor =>
+      isDarkMode ? Color(__theme_common_profile_info_more_icon_color_dark__) : Color(__theme_common_profile_info_more_icon_color__);
+
+   static Color get themeCommonProfilePhotoBackBackgroundColor =>
+      isDarkMode ? Color(__theme_common_profile_photo_back_background_color_dark__) : Color(__theme_common_profile_photo_back_background_color__);
+
+   static Color get themeCommonProfilePhotoPaginationShadowColor =>
+      isDarkMode ? Color(__theme_common_profile_photo_pagination_shadow_color_dark__) : Color(__theme_common_profile_photo_pagination_shadow_color__);
+
+   static Color get themeCommonProfilePhotoEditButtonBackgroundColor =>
+      isDarkMode ? Color(__theme_common_profile_photo_edit_button_background_color_dark__) : Color(__theme_common_profile_photo_edit_button_background_color__);
+
+   static Color get themeCommonProfileCompatibilityBarBackgroundColor =>
+      isDarkMode ? Color(__theme_common_profile_compatibility_bar_background_color_dark__) : Color(__theme_common_profile_compatibility_bar_background_color__);
+
+   static Color get themeCommonProfileVideoChatIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_profile_video_chat_icon_background_color_dark__) : Color(__theme_common_profile_video_chat_icon_background_color__);
+
+   static Color get themeCommonProfileActionToolbarLikeIconBackgroundColor =>
+      isDarkMode ? Color(__theme_common_profile_action_toolbar_like_icon_background_color_dark__) : Color(__theme_common_profile_action_toolbar_like_icon_background_color__);
+
+   static Color get themeCommonPreviewPhotosCloseIconColor =>
+      isDarkMode ? Color(__theme_common_preview_photos_close_icon_color_dark__) : Color(__theme_common_preview_photos_close_icon_color__);
+
+   static Color get themeCommonPreviewPhotosBackgroundColor =>
+      isDarkMode ? Color(__theme_common_preview_photos_background_color_dark__) : Color(__theme_common_preview_photos_background_color__);
+
+   static Color get themeCommonProfileAction1Color =>
+      isDarkMode ? Color(__theme_common_profile_action_1_color_dark__) : Color(__theme_common_profile_action_1_color__);
+
+   static Color get themeCommonProfileAction2Color =>
+      isDarkMode ? Color(__theme_common_profile_action_2_color_dark__) : Color(__theme_common_profile_action_2_color__);
+
+   static Color get themeCommonProfileActionTextColor =>
+      isDarkMode ? Color(__theme_common_profile_action_text_color_dark__) : Color(__theme_common_profile_action_text_color__);
+
+   static Color get themeCommonMessageChatScrollerIconColor =>
+      isDarkMode ? Color(__theme_common_message_chat_scroller_icon_color_dark__) : Color(__theme_common_message_chat_scroller_icon_color__);
+
+   static Color get themeCommonMessageChatDateColor =>
+      isDarkMode ? Color(__theme_common_message_chat_date_color_dark__) : Color(__theme_common_message_chat_date_color__);
+
+   static Color get themeCommonMessageChatWinkTimeColor =>
+      isDarkMode ? Color(__theme_common_message_chat_wink_time_color_dark__) : Color(__theme_common_message_chat_wink_time_color__);
+
+   static Color get themeCommonMessageChatWinkReceivedIconColor =>
+      isDarkMode ? Color(__theme_common_message_chat_wink_received_icon_color_dark__) : Color(__theme_common_message_chat_wink_received_icon_color__);
+
+   static Color get themeCommonMessageChatAttachmentIconColor =>
+      isDarkMode ? Color(__theme_common_message_chat_attachment_icon_color_dark__) : Color(__theme_common_message_chat_attachment_icon_color__);
+
+   static Color get themeCommonMessageChatPromotedContentColor =>
+      isDarkMode ? Color(__theme_common_message_chat_promoted_content_color_dark__) : Color(__theme_common_message_chat_promoted_content_color__);
+
+   static Color get themeCommonVideoImCallWidgetWrapperBackgroundColor =>
+      isDarkMode ? Color(__theme_common_video_im_call_widget_wrapper_background_color_dark__) : Color(__theme_common_video_im_call_widget_wrapper_background_color__);
+
+   static Color get themeCommonVideoImCallWidgetNoAnswerTextColor =>
+      isDarkMode ? Color(__theme_common_video_im_call_widget_no_answer_text_color_dark__) : Color(__theme_common_video_im_call_widget_no_answer_text_color__);
+
+   static Color get themeCommonVideoImCallWidgetLocalVideoShadowColor =>
+      isDarkMode ? Color(__theme_common_video_im_call_widget_local_video_shadow_color_dark__) : Color(__theme_common_video_im_call_widget_local_video_shadow_color__);
+
+   static Color get themeCommonVideoImWidgetBlurOverlayBackgroundColor =>
+      isDarkMode ? Color(__theme_common_video_im_widget_blur_overlay_background_color_dark__) : Color(__theme_common_video_im_widget_blur_overlay_background_color__);
+
+   static Color get themeCommonVideoImWidgetCallPhoneIconColor =>
+      isDarkMode ? Color(__theme_common_video_im_widget_call_phone_icon_color_dark__) : Color(__theme_common_video_im_widget_call_phone_icon_color__);
+
+   static Color get themeCommonVideoImWidgetEndCallPhoneIconColor =>
+      isDarkMode ? Color(__theme_common_video_im_widget_end_call_phone_icon_color_dark__) : Color(__theme_common_video_im_widget_end_call_phone_icon_color__);
+
+   static Color get themeCommonPaymentBillingGatewayBorderColor =>
+      isDarkMode ? Color(__theme_common_payment_billing_gateway_border_color_dark__) : Color(__theme_common_payment_billing_gateway_border_color__);
+
+   static Color get themeCommonPaymentInitialHighlightColor =>
+      isDarkMode ? Color(__theme_common_payment_initial_highlight_color_dark__) : Color(__theme_common_payment_initial_highlight_color__);
+
+   static Color get themeCommonPaymentOrderProcessingPageIconColor =>
+      isDarkMode ? Color(__theme_common_payment_order_processing_page_icon_color_dark__) : Color(__theme_common_payment_order_processing_page_icon_color__);
+
+   static Color get themeCommonToasterTextColor =>
+      isDarkMode ? Color(__theme_common_toaster_text_color_dark__) : Color(__theme_common_toaster_text_color__);
+
+   static Color get themeCommonToasterBackgroundColor =>
+      isDarkMode ? Color(__theme_common_toaster_background_color_dark__) : Color(__theme_common_toaster_background_color__);
+
+   static Color get themeCustomLoginFormInputIconColor =>
+      isDarkMode ? Color(__theme_custom_login_form_input_icon_color_dark__) : Color(__theme_custom_login_form_input_icon_color__);
+
+   static Color get themeCustomLoginFormButtonBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_login_form_button_background_color_dark__) : Color(__theme_custom_login_form_button_background_color__);
+
+   static Color get themeCustomDashboardProfileButtonBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_button_background_color_dark__) : Color(__theme_custom_dashboard_profile_button_background_color__);
+
+   static Color get themeCustomDashboardProfileButtonTextColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_button_text_color_dark__) : Color(__theme_custom_dashboard_profile_button_text_color__);
+
+   static Color get themeCustomDashboardProfileWrapperBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_wrapper_background_color_dark__) : Color(__theme_custom_dashboard_profile_wrapper_background_color__);
+
+   static Color get themeCustomDashboardProfileInfoWrapperBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_info_wrapper_background_color_dark__) : Color(__theme_custom_dashboard_profile_info_wrapper_background_color__);
+
+   static Color get themeCustomDashboardProfileInfoWrapperShadowColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_info_wrapper_shadow_color_dark__) : Color(__theme_custom_dashboard_profile_info_wrapper_shadow_color__);
+
+   static Color get themeCustomDashboardProfileAvatarBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_avatar_background_color_dark__) : Color(__theme_custom_dashboard_profile_avatar_background_color__);
+
+   static Color get themeCustomDashboardProfileInfoWrapperBorderColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_profile_info_wrapper_border_color_dark__) : Color(__theme_custom_dashboard_profile_info_wrapper_border_color__);
+
+   static Color get themeCustomNotificationBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_notification_background_color_dark__) : Color(__theme_custom_notification_background_color__);
+
+   static Color get themeCustomProfileCompatibilityBarMainBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_profile_compatibility_bar_main_background_color_dark__) : Color(__theme_custom_profile_compatibility_bar_main_background_color__);
+
+   static Color get themeCustomDashboardTinderActionToolbarDislikeIconBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_action_toolbar_dislike_icon_background_color_dark__) : Color(__theme_custom_dashboard_tinder_action_toolbar_dislike_icon_background_color__);
+
+   static Color get themeCustomDashboardTinderActionToolbarDislikeIconColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_action_toolbar_dislike_icon_color_dark__) : Color(__theme_custom_dashboard_tinder_action_toolbar_dislike_icon_color__);   
+   
+   static Color get themeCustomDashboardTinderActionToolbarWidgetSmallIconActiveColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_action_toolbar_widget_small_icon_active_color_dark__) : Color(__theme_custom_dashboard_tinder_action_toolbar_widget_small_icon_active_color__);
+
+   static Color get themeCustomDashboardTinderActionToolbarWidgetSmallIconBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_action_toolbar_widget_small_icon_background_color_dark__) : Color(__theme_custom_dashboard_tinder_action_toolbar_widget_small_icon_background_color__);
+
+   static Color get themeCustomDashboardTinderActionToolbarWidgetSmallIconActiveBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_action_toolbar_widget_small_icon_active_background_color_dark__) : Color(__theme_custom_dashboard_tinder_action_toolbar_widget_small_icon_active_background_color__);
+
+   static Color get themeCustomDashboardTinderLoadingWidgetRadarStartColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_loading_widget_radar_start_color_dark__) : Color(__theme_custom_dashboard_tinder_loading_widget_radar_start_color__);
+
+   static Color get themeCustomDashboardTinderLoadingWidgetRadarEndColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_tinder_loading_widget_radar_end_color_dark__) : Color(__theme_custom_dashboard_tinder_loading_widget_radar_end_color__);
+
+   static Color get themeCustomMatchedSendMessageButtonBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_matched_send_message_button_background_color_dark__) : Color(__theme_custom_matched_send_message_button_background_color__);
+
+   static Color get themeCustomMatchedSendMessageButtonTextColor =>
+      isDarkMode ? Color(__theme_custom_matched_send_message_button_text_color_dark__) : Color(__theme_custom_matched_send_message_button_text_color__);
+
+   static Color get themeCustomMatchedSendMessageIconColor =>
+      isDarkMode ? Color(__theme_custom_matched_send_message_icon_color_dark__) : Color(__theme_custom_matched_send_message_icon_color__);
+
+   static Color get themeCustomProfileActionToolbarWidgetSmallIconBorderColor =>
+      isDarkMode ? Color(__theme_custom_profile_action_toolbar_widget_small_icon_border_color_dark__) : Color(__theme_custom_profile_action_toolbar_widget_small_icon_border_color__);
+
+   static Color get themeCustomProfileActionToolbarWidgetSmallIconBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_profile_action_toolbar_widget_small_icon_background_color_dark__) : Color(__theme_custom_profile_action_toolbar_widget_small_icon_background_color__);
+   
+   static Color get themeCustomProfileActionToolbarWidgetSmallIconColor =>
+      isDarkMode ? Color(__theme_custom_profile_action_toolbar_widget_small_icon_color_dark__) : Color(__theme_custom_profile_action_toolbar_widget_small_icon_color__);
+
+   static Color get themeCustomDashboardConversationListBackgroundColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_conversation_list_background_color_dark__) : Color(__theme_custom_dashboard_conversation_list_background_color__);
+   
+   static Color get themeCustomDashboardConversationListPreviewTextColor =>
+      isDarkMode ? Color(__theme_custom_dashboard_conversation_list_preview_text_color_dark__) : Color(__theme_custom_dashboard_conversation_list_preview_text_color__);
+   
+}

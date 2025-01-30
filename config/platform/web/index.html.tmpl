@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="__description__">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="__name__">
+  <link rel="apple-touch-icon" sizes="180x180" href="__apple_icon__">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="__fav_icon__"/>
+
+  <title>__name__</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="splash.css" rel="stylesheet" type="text/css">
+  <link href="orientation.css" rel="stylesheet" type="text/css">
+  <script src="platform.min.js"></script>
+  <script>
+    // iOS 15 fix
+    const isSafari = /^((?!chrome|android).)*safari/i.test(platform.ua);
+    if (isSafari) {
+      HTMLCanvasElement.prototype.getContext = (function (o) {
+        return function (contextType) {
+          return contextType !== "webgl2" ? o.apply(this, arguments) : null;
+        };
+      })(HTMLCanvasElement.prototype.getContext);
+    }
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-analytics.js"></script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+  <script src="flutter_facebook_auth.js" type="application/javascript"></script>
+</head>
+
+<body>
+  <picture class="splash">
+    <source srcset="__splash_screen_image_dark__" media="(prefers-color-scheme: dark)">
+    <img src="__splash_screen_image__" class="splash_image" alt="Splash screen">
+  </picture>
+
+  <div id="sk-app-orientation-overlay" style="visibility: hidden">
+    <div class="sk-app-orientation-img-wrap">
+      <img src="assets/image/common/ic_switch_to_portrait.png" alt="" />
+    </div>
+  </div>
+
+  <script>
+    function processOrientationOverlay() {
+        window.orientation == 90 || window.orientation == -90
+            ? document.getElementById("sk-app-orientation-overlay").style.visibility = "visible"
+            : document.getElementById("sk-app-orientation-overlay").style.visibility = "hidden";
+    }
+
+    var supportsOrientationChange = "onorientationchange" in window,
+            orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+
+    window.addEventListener(orientationEvent, function() {
+        processOrientationOverlay();
+    }, false);
+
+    processOrientationOverlay();
+  </script>
+
+  <script>
+    var FACEBOOK_APP_ID = "__social_auth_facebook_app_id__";
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: FACEBOOK_APP_ID,
+        cookie: true,
+        xfbml: true,
+        version: "v9.0",
+      });
+      FB.AppEvents.logPageView();
+    };
+  </script>
+  <script>
+    const PAYMENT_PROVIDER_STRIPE = 'stripe';
+    const PAYMENT_PROVIDER_PAYPAL = 'paypal';
+
+    const PAYPAL_PAYMENT_STATUS_FLAG = 'flutter.paypal_payment_completed';
+    const STRIPE_PAYMENT_STATUS_FLAG = 'flutter.stripe_payment_status';
+
+    const PAYMENT_PROVIDER_PARAM = 'payment_provider';
+    const TRANSACTION_STATUS_PARAM = 'transaction_status';
+
+    const query = Object.fromEntries(new URLSearchParams(window.location.search));
+    const queryParams = Object.entries(query);
+
+    if (queryParams.length >= 2) {
+      const paymentProvider = query[PAYMENT_PROVIDER_PARAM];
+      const transactionStatus = query[TRANSACTION_STATUS_PARAM];
+
+      if (paymentProvider && transactionStatus) {
+        let key = null;
+        let value = null;
+
+        switch (paymentProvider) {
+          case PAYMENT_PROVIDER_STRIPE:
+            key = STRIPE_PAYMENT_STATUS_FLAG;
+            value = transactionStatus;
+            break;
+
+          case PAYMENT_PROVIDER_PAYPAL:
+            value = transactionStatus === 'success';
+            key = PAYPAL_PAYMENT_STATUS_FLAG;
+            break;
+
+          default:
+            console.log('Unknown payment provider:', paymentProvider);
+            break;
+        }
+
+        if (key && (value !== null && value !== undefined)) {
+          if (typeof value === "boolean") {
+            window.localStorage.setItem(key, value);
+          } else {
+            window.localStorage.setItem(key, JSON.stringify(value));
+          }
+        }
+      }
+
+      // Filter out the transaction status parameters but preserve the rest in case they're useful.
+      const filteredParams = queryParams.filter(
+        ([key]) => key !== PAYMENT_PROVIDER_PARAM && key !== TRANSACTION_STATUS_PARAM
+      );
+
+      // Form new query string from the filtered parameters and append it to the path.
+      const newQueryString = new URLSearchParams(Object.fromEntries(filteredParams)).toString();
+      const newPath = window.location.pathname + (newQueryString.length > 0 ? '?' + newQueryString : '');
+
+      // Replace current path with the newly formed one.
+      window.history.replaceState(window.history.state, '', newPath);
+    }
+  </script>
+  <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "__pwa_firebase_api_key__",
+      authDomain: "__pwa_firebase_auth_domain__",
+      projectId: "__pwa_firebase_project_id__",
+      storageBucket: "__pwa_firebase_storage_bucket__",
+      messagingSenderId: "__pwa_firebase_messaging_sender_id__",
+      measurementId: "__pwa_firebase_analytics_measurement_id__",
+      appId: "__pwa_firebase_app_id__"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async function () {
+        const firebaseSw = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+
+        firebase.messaging().getToken({
+          serviceWorkerRegistration: firebaseSw,
+          vapidKey: '__pwa_firebase_vapid_key__'
+        }).then(token => {
+          console.log('[firebase_messaging] Push messages subscription activated');
+        }).catch(() => {
+          console.log('[firebase_messaging] can\'t obtain notifications permission');
+        });
+      });
+
+      navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data.type === 'new_push_notification') {
+          // 'flutter.' prefix is required in order for the shared preferences plugin to recognize
+          // this value.
+          localStorage.setItem('flutter.push_notification_data', JSON.stringify(event.data));
+        }
+      });
+    }
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>

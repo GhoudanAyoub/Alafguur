@@ -1,0 +1,237 @@
+name: application
+description: Skadate mobile application
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 3.0.8+8
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  # Slidable list item implementation.
+  flutter_slidable: ^3.1.1
+
+  # List that allows to programmatically scroll to a specific item.
+  scrollable_positioned_list: ^0.3.8
+
+  # Launches URLs.
+  url_launcher: ^6.0.9
+
+  # Caches internet images.
+  cached_network_image: ^3.1.0
+
+  # Tinder cards (a customized version).
+  tcard:
+    git: https://github.com/skalfa/tcard
+
+  # Facebook sign-in library, used with Firebase auth.
+  flutter_facebook_auth: ^7.1.1
+
+  # Google sign-in library, used with Firebase auth.
+  google_sign_in: ^6.2.2
+
+  # Core Firebase package.
+  firebase_core: ^3.8.1
+
+  # Firebase Auth package.
+  firebase_auth: ^5.3.4
+
+  # Firebase Cloud Messaging package, used for Push notifications.
+  firebase_messaging: ^15.1.5
+
+  # Firebase Analytics integration.
+  firebase_analytics: ^11.3.6
+
+  # Converts HTML to Flutter widgets, used to display HTML content.
+  flutter_html: ^3.0.0-beta.2
+
+  # Toasts for Flutter.
+  another_flushbar: ^1.10.24
+
+  # File picker dialog.
+  file_picker: ^8.1.4
+
+  # Defines annotations used by json_serializable to generate code for JSON serialization.
+  json_annotation: ^4.0.1
+
+  # Automatically choose between Material and Cupertino widgets based on the host platform.
+  flutter_platform_widgets: ^7.0.1
+
+  # Simplified styling syntax.
+  styled_widget: ^0.4.1
+
+  # Internet connection state watcher.
+  connectivity_plus: ^6.1.0
+
+  # Platform-specific persistent storage wrapper for key-value data.
+  shared_preferences: ^2.0.7
+
+  # Platform-independent parsing and serialization of HTTP formats.
+  http_parser: ^4.0.2
+
+  # HTTP client.
+  dio: ^5.7.0
+
+  # Routing library.
+  fluro: ^2.0.3
+
+  # `sprintf` function.
+  sprintf: ^7.0.0
+
+  # Service Locator pattern implementation.
+  get_it: ^8.0.2
+
+  # Reactive state management library.
+  mobx: ^2.0.4
+
+  # Flutter integration for MobX.
+  flutter_mobx: ^2.0.2
+
+  # JWT decoder.
+  jwt_decoder: ^2.0.1
+
+  # WebRTC plugin for Flutter based on GoogleWebRTC.
+  flutter_webrtc: ^0.12.2
+
+  # Host device information.
+  device_info_plus: ^11.1.1
+
+  # Host browser detector for Flutter Web.
+  browser_detector: ^2.0.0
+
+  # Admob integration.
+  google_mobile_ads: ^5.2.0
+
+  # Turns URLs and emails into clickable links in text.
+  flutter_linkify: ^6.0.0
+
+  # A user location detector
+  geolocator: ^13.0.2
+
+  # Audio player.
+  just_audio: ^0.9.7
+
+  # Flutter bridge to Sign in with Apple.
+  sign_in_with_apple: ^6.1.3
+
+  # Implementations of SHA, MD5, and HMAC cryptographic functions.
+  crypto: ^3.0.1
+
+  # Utility functions and classes to make working with collections easier.
+  collection: ^1.18.0
+
+  # Deep links and custom URL schemes support.
+  app_links: ^6.3.2
+
+  # Stores the pushed and popped routes history.
+  navigation_history_observer: ^1.1.0
+
+  # Selects pictures from the Android and iOS image library, optionally can take new pictures using
+  # camera.
+  image_picker: ^1.1.2
+
+  # Utilities for handling MIME types, incl. determining file type from its extension or content.
+  mime: ^2.0.0
+
+  # Platform-independent native purchases API.
+  in_app_purchase: ^3.2.0
+
+  # Native keyboard status watcher.
+  flutter_keyboard_visibility: ^6.0.0
+
+  # Centralized log and crash report analysis service.
+  sentry_flutter: ^7.0.0
+
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.3
+
+  in_app_purchase_android: any
+  intl: any
+  html: any
+  path: ^1.8.3
+
+dev_dependencies:
+  # Automatic JSON (de-)serialization code generator.
+  json_serializable: ^6.9.0
+
+  # Launcher icon builder.
+  flutter_launcher_icons: ^0.14.1
+
+  # Flutter native splash screen customization.
+  flutter_native_splash: ^2.4.3
+
+  # Build system for code generation and modular compilation.
+  build_runner: ^2.1.1
+
+  # MobX store code generator.
+  mobx_codegen: ^2.0.1+3
+
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  fonts:
+    - family: SkMobileFont
+      fonts:
+        - asset: assets/font/SkMobileFont.ttf
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/image/app/
+    - assets/image/app/2.0x/
+    - assets/image/app/3.0x/
+    - assets/image/common/
+    - assets/image/common/2.0x/
+    - assets/image/common/3.0x/
+    - assets/image/installation_guide/
+    - assets/image/login/
+    - assets/image/login/2.0x/
+    - assets/image/login/3.0x/
+    - assets/image/edit/
+    - assets/image/edit/2.0x/
+    - assets/image/edit/3.0x/
+    - assets/image/payment/
+    - assets/image/payment/billing_gateways/
+    - assets/sound/video_im/
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

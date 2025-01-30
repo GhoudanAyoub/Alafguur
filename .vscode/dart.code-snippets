@@ -1,0 +1,128 @@
+{
+    // structural snippets
+
+    "SKM service": {
+        "prefix": "skserv",
+        "body": [
+            "class $1Service {",
+            "  $2",
+            "}"
+        ],
+        "description": "Skmobileapp service class"
+    },
+
+    "SKM module": {
+        "prefix": "skmod",
+        "body": [
+            "import 'package:get_it/get_it.dart';",
+            "",
+            "// relative imports",
+            "import '../../app/service/model/route_model.dart';",
+            "import '../../app/service/route_guards.dart';",
+            "",
+            "final serviceLocator = GetIt.instance;",
+            "",
+            "List<RouteModel> get${1:Module}Routes() {",
+            "  return [",
+            "    $2",
+            "  ];",
+            "}",
+            "",
+            "void init${1:Module}ServiceLocator() {",
+            "  $3",
+            "}"
+        ],
+        "description": "Skmobileapp module configuration"
+    },
+
+    "SKM page": {
+        "prefix": "skpage",
+        "body": [
+            "import 'package:flutter/material.dart';",
+            "",
+            "// relative imports",
+            "import '../../base/page/abstract_page.dart';",
+            "",
+            "class ${1:Page}Page extends AbstractPage {",
+            "  @override",
+            "  _${1:Page}PageState createState() => _${1:Page}PageState();",
+            "}",
+            "",
+            "class _${1:Page}PageState extends State<${1:Page}Page> {",
+            "  @override",
+            "  Widget build(BuildContext context) {",
+            "    $2",
+            "  }",
+            "}"
+        ],
+        "description": "Skmobileapp page"
+    },
+
+    "RouteModel": {
+        "prefix": "skrm",
+        "body": [
+            "RouteModel(",
+            "  path: '$1',",
+            "  visibility: RouteVisibility.$2,",
+            "  pageFactory: $3,",
+            "  guards: [",
+            "    $4,",
+            "  ],",
+            "),"
+        ],
+        "description": "Skmobileapp RouteModel instance"
+    },
+
+    // GetIt snippets
+
+    "serviceLocator.get": {
+        "prefix": "sg",
+        "body": [
+            "serviceLocator.get<$1>()"
+        ],
+        "description": "Retrieve a service from GetIt"
+    },
+
+    "registerLazySingleton": {
+        "prefix": "srls",
+        "body": [
+            "serviceLocator.registerLazySingleton<$1>(() => $2)"
+        ],
+        "description": "Register lazy singleton"
+    },
+
+    "registerLazySingletonAsync": {
+        "prefix": "srlsa",
+        "body": [
+            "serviceLocator.registerLazySingletonAsync<$1>(() => $2)",
+        ],
+        "description": "Register asynchronous lazy singleton"
+    },
+
+    "registerSingletonWithDependencies": {
+        "prefix": "srlsd",
+        "body": [
+            "serviceLocator.registerSingletonWithDependencies<$1>(",
+            "  () => $2,",
+            "  dependsOn: [$3],",
+            ")"
+        ],
+        "description": "Register singleton with dependencies"
+    },
+
+    "registerFactory": {
+        "prefix": "srf",
+        "body": [
+            "serviceLocator.registerFactory(() => $1)"
+        ],
+        "description": "Register factory"
+    },
+
+    "registerFactoryAsync": {
+        "prefix": "srfa",
+        "body": [
+            "serviceLocator.registerFactoryAsync(() => $1)"
+        ],
+        "description": "Register asynchronous factory"
+    }
+}

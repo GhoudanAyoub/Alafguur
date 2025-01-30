@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836617456980",
+    "project_id": "alafguur2",
+    "storage_bucket": "alafguur2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836617456980:android:89fd1e3e3238da0e004cc1",
+        "android_client_info": {
+          "package_name": "com.Alafguur"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZkJYe4wIhHQ_cLLEmH1X9oNuozKAEiQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

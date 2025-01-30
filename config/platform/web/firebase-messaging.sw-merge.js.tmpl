@@ -1,0 +1,42 @@
+// firebase-messaging.sw-merge.js
+// Do not remove this separator.
+
+importScripts("https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/8.4.1/firebase-messaging.js");
+
+const firebaseConfig = {
+    apiKey: "__pwa_firebase_api_key__",
+    authDomain: "__pwa_firebase_auth_domain__",
+    projectId: "__pwa_firebase_project_id__",
+    storageBucket: "__pwa_firebase_storage_bucket__",
+    messagingSenderId: "__pwa_firebase_messaging_sender_id__",
+    measurementId: "__pwa_firebase_analytics_measurement_id__",
+    appId: "__pwa_firebase_app_id__"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(message => {
+    console.log('[firebase_messaging] Push message received');
+    const notification = message.notification;
+
+    if (notification.data) {
+        clients.matchAll({
+            type: 'window',
+            includeUncontrolled: true
+        }).then(clients => {
+            if (!clients.length) {
+                return;
+            }
+
+            clients.forEach(client => {
+                client.postMessage({
+                    'type': 'new_push_notification',
+                    'data': notification.data
+                });
+            });
+        });
+    }
+});

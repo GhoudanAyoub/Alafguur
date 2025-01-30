@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Generated Android string resources file.
+
+    Create a new file to add static string resources if needed.
+    Any changes in this file will be overwritten on ./app.sh prepare.
+-->
+
+<resources>
+    <string name="app_name">Alafguur</string>
+    <string name="facebook_app_id">966631350727897</string>
+    <string name="fb_login_protocol_scheme">fb966631350727897</string>
+    <string name="admob_app_id">ca-app-pub-3386633579554044~8756931269</string>
+</resources>
