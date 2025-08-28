@@ -695,7 +695,7 @@ Widget infoItemContainer(
             ),
       ],
     ),
-  ).gestures(onTap: clickCallback as void Function()?);
+  ).gestures(onTap: clickCallback != null ? () => clickCallback() : null);
 }
 
 final infoItemLabelContainer = (

@@ -18,12 +18,8 @@ import 'widget/profile_view_question_widget.dart';
 final serviceLocator = GetIt.instance;
 
 class ProfilePage extends AbstractPage {
-  const ProfilePage({Key? key, required routeParams, required widgetParams})
-      : super(
-          key: key,
-          routeParams: routeParams,
-          widgetParams: widgetParams,
-        );
+  const ProfilePage({Key? key, required Map<String, dynamic>? routeParams, required Map<String, dynamic>? widgetParams})
+    : super(key: key, routeParams: routeParams, widgetParams: widgetParams);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -40,17 +36,13 @@ class _ProfileState extends State<ProfilePage> {
 
     _state = serviceLocator.get<ProfileState>();
 
-    _state.init(int.parse(widget.routeParams!['id'][0]));
+    _state.init(int.parse(widget.routeParams?['id'][0].toString() ?? "0"));
 
     if (widget.widgetParams!['isPrevPageMessages'] != null) {
       _isPrevPageMessages = true;
     }
 
-    widget.logViewItem(
-      widget.routeParams!['id'][0],
-      '',
-      'profile',
-    );
+    widget.logViewItem(widget.routeParams?['id'][0].toString() ?? "", '', 'profile');
   }
 
   @override
@@ -69,12 +61,11 @@ class _ProfileState extends State<ProfilePage> {
         body: !_state.isPageLoaded || !_state.isProfileLoaded
             ? ProfileSkeletonWidget(isProfileOwner: _state.isProfileOwner)
             : _state.isViewProfileAllowed
-                ? _profilePage()
-                : PaymentAccessDeniedWidget(
-                    showBackButton: true,
-                    showUpgradeButton:
-                        _state.permissionViewProfile?.isPromoted == true,
-                  ),
+            ? _profilePage()
+            : PaymentAccessDeniedWidget(
+                showBackButton: true,
+                showUpgradeButton: _state.permissionViewProfile?.isPromoted == true,
+              ),
         // make it scrollable only when the page is loading
         scrollable: !_state.isPageLoaded || !_state.isProfileLoaded,
       ),
@@ -90,17 +81,13 @@ class _ProfileState extends State<ProfilePage> {
             child: Column(
               children: [
                 // photos
-                profilePagePhotosContainer(
-                  context,
-                  ProfilePhotoWidget(state: _state),
-                ),
+                profilePagePhotosContainer(context, ProfilePhotoWidget(state: _state)),
 
                 // profile info
                 ProfileInfoWidget(state: _state),
 
                 // compatibility
-                if (!_state.isProfileOwner && _state.isCompatibilityLoaded)
-                  ProfileCompatibilityWidget(state: _state),
+                if (!_state.isProfileOwner && _state.isCompatibilityLoaded) ProfileCompatibilityWidget(state: _state),
 
                 // view questions
                 ProfileViewQuestionWidget(state: _state),
@@ -110,10 +97,7 @@ class _ProfileState extends State<ProfilePage> {
         ),
         // profile action toolbar
         if (_state.isActionToolbarAllowed)
-          ProfileActionToolbarWidget(
-            state: _state,
-            isPrevPageMessages: _isPrevPageMessages,
-          ),
+          ProfileActionToolbarWidget(state: _state, isPrevPageMessages: _isPrevPageMessages),
       ],
     );
   }

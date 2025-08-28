@@ -41,7 +41,7 @@ final profilePageInfoMoreContainer = (
     SizedBox(
       height: 30,
       child: PlatformIconButton(
-        onPressed: clickCallBack as void Function()?,
+        onPressed: clickCallBack != null ? () => clickCallBack() : null,
         materialIcon: Icon(
           Icons.more_vert,
           size: 30,

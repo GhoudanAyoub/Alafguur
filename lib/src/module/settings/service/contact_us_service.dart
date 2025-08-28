@@ -106,7 +106,7 @@ class ContactUsService {
   }
 
   Future<void> sendMessage(
-    Map messageParams,
+    Map<String, dynamic> messageParams,
   ) async {
     await httpService.post(
       'contact-us/',

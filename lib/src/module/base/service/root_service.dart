@@ -16,7 +16,7 @@ class RootService {
 
   /// load site settings
   Future<Map<String, dynamic>?> loadSettings() async {
-    return await this.httpService.get('configs');
+    return (await this.httpService.get('configs')) as Map<String, dynamic>?;
   }
 
   // ping api
@@ -50,21 +50,21 @@ class RootService {
         'data_hashes': _serverUpdatesDataHashes,
       },
       requestName: _serverUpdatesRequestName,
-    );
+    ) as Map<String, dynamic>?;
 
     // the request might be cancelled
     if (response == null) {
-      return response;
+      return null;
     }
 
     // save the data hashes for the next requests to avoid getting old data
     if (response.containsKey('data_hashes')) {
       // update hashes
-      response['data_hashes'].forEach((key, dataHash) {
-        _serverUpdatesDataHashes[key] = dataHash;
+      (response['data_hashes'] as Map<String, dynamic>).forEach((key, dataHash) {
+        _serverUpdatesDataHashes[key] = dataHash as String?;
       });
     }
 
-    return response.containsKey('data') ? response['data'] : {};
+    return response.containsKey('data') ? response['data'] as Map<String, dynamic> : {};
   }
 }

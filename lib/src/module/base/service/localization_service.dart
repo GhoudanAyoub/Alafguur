@@ -29,14 +29,18 @@ class LocalizationService {
     }
 
     try {
-      final response =
-          (await httpService.get('i18n/${locale.languageCode}') as Map);
+      final response = await httpService.get('i18n/${locale.languageCode}');
+      
+      if (response is! Map) {
+        throw FormatException('Expected Map response, got ${response.runtimeType}');
+      }
 
+      final responseMap = response as Map;
       _languageCode = locale.languageCode;
       httpService.apiLanguage = _languageCode;
 
-      if (response['translations'] is Map) {
-        _translations = Map.from(response['translations']);
+      if (responseMap['translations'] is Map) {
+        _translations = Map.from(responseMap['translations'] as Map);
       } else {
         _translations = {};
       }

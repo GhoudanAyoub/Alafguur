@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 import 'main_config.dart' as mainConfig;
 import 'src/app/service/app_settings_service.dart';
@@ -13,10 +12,6 @@ import 'src/module/base/page/state/root_state.dart';
 import 'src/module/base/utility/theme_utility.dart';
 
 Future<void> main() async {
-  // Enable pending purchases on Android.
-  if (defaultTargetPlatform == TargetPlatform.android) {
-    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
-  }
 
   // init custom error handler
   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
@@ -49,14 +44,6 @@ Future<void> main() async {
     final appRootState =  mainConfig.serviceLocator.get<RootState>();
     final loggerService =  mainConfig.serviceLocator.get<LoggerService>();
 
-    try {
-      // Attempt to log error information.
-      await loggerService.logError(error, stackTrace);
-    } catch (_) {
-      // All loggers have failed, can't do anything but ignore the exception
-      // at this point. The error widget will print exception data to the
-      // console.
-    }
     // Ignore `in_app_purchase` plugin errors when running in PWA mode.
     //
     // This is a temporary solution that is going to be removed once a better

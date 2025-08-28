@@ -105,7 +105,7 @@ class HttpService {
   /// Perform a `post` query
   Future<dynamic> post(
     String uri, {
-    dynamic data,
+    Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
     List<MultipartFile>? files,
     ResponseType responseType = ResponseType.json,
@@ -204,7 +204,7 @@ class HttpService {
   /// Download progress can be tracked using the [onReceiveProgressCallback] callback.
   Future<Response?> _postRaw(
     String uri, {
-    dynamic data,
+    Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
     List<MultipartFile>? files,
     ResponseType responseType = ResponseType.json,
@@ -444,7 +444,7 @@ class HttpService {
 
     final String? errorType =
         response.data is Map && response.data['type'] != null
-            ? response.data['type']
+            ? response.data['type'] as String?
             : null;
 
     switch (response.statusCode) {

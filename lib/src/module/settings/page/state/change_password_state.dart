@@ -6,22 +6,22 @@ import '../../service/change_password_service.dart';
 
 part 'change_password_state.g.dart';
 
-class ChangePasswordState = _ChangePassworState with _$ChangePasswordState;
+class ChangePasswordState = _ChangePasswordState with _$ChangePasswordState;
 
-abstract class _ChangePassworState with Store {
+abstract class _ChangePasswordState with Store {
   final ChangePasswordService changePasswordService;
   final RootState rootState;
 
   @observable
   bool isPasswordEditing = false;
 
-  _ChangePassworState({
+  _ChangePasswordState({
     required this.changePasswordService,
     required this.rootState,
   });
 
   @action
-  initializeForm(FormBuilderWidget formBuilder) {
+  void initializeForm(FormBuilderWidget formBuilder) {
     formBuilder.registerFormElements(changePasswordService.getFormElements(
       rootState.getSiteSetting('minPasswordLength', 0),
       rootState.getSiteSetting('maxPasswordLength', 0),

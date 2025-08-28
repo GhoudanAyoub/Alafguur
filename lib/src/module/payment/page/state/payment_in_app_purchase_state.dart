@@ -229,6 +229,16 @@ class PaymentInAppPurchaseState {
       case PurchaseStatus.error:
         _onPurchaseStatusErrorCallback?.call(purchase);
         break;
+        
+      case PurchaseStatus.canceled:
+        // Handle canceled purchases
+        _onPurchaseStatusErrorCallback?.call(purchase);
+        break;
+        
+      default:
+        // Handle any new status that might be added in future versions
+        _onPurchaseStatusErrorCallback?.call(purchase);
+        break;
     }
 
     if (purchase.pendingCompletePurchase) {

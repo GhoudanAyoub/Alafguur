@@ -65,6 +65,8 @@ class JoinFinalizeService {
       },
     );
 
-    await httpService.post('questions-data', data: questions);
+    // Convert list to map for API compatibility
+    Map<String, dynamic> questionsMap = {'questions': questions};
+    await httpService.post('questions-data', data: questionsMap);
   }
 }

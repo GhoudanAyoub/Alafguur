@@ -11,7 +11,7 @@ class BookmarkProfileService {
   });
 
   Future<List?> loadBookmarks() async {
-    return await this.httpService.get('bookmarks');
+    return await this.httpService.get('bookmarks') as List?;
   }
 
   /// add a user in the bookmark list

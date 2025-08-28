@@ -67,7 +67,7 @@ class _PaymentInitialCreditPacksWidgetState
             paymentInitialMembershipWidgetUserInfoWrapperContainer(
               LocalizationService.of(context).t('your_credits'),
               paymentInitialMembershipWidgetUserInfoContainer(
-                _state.creditPacksData.balance.toString(),
+                _state.creditPacksData.balance != null ? _state.creditPacksData.balance.toString() : '0',
                 _showCreditActionsInfo,
                 infoColor:
                     AppSettingsService.themeCommonPaymentInitialHighlightColor,
@@ -92,14 +92,14 @@ class _PaymentInitialCreditPacksWidgetState
     return _state.creditPacksData.packs.map<Widget>(
       (pack) => paymentInitialPagePricedProductItemContainer(
         context,
-        pack.credits.toString(),
+        pack.credits != null ? pack.credits.toString() : '0',
         LocalizationService.of(context).t('credits'),
         LocalizationService.of(context).t(
           'credit_pack',
           searchParams: ['currency', 'price'],
           replaceParams: [
             _state.billingCurrency,
-            pack.price.toString(),
+            pack.price != null ? pack.price.toString() : '0',
           ],
         ),
         onTapCallback: () => _onCreditPackContainerTap(pack),

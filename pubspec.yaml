@@ -5,7 +5,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 3.0.8+8
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=3.8.0 <4.0.0'
 
 dependencies:
   # Slidable list item implementation.
@@ -15,17 +15,17 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
 
   # Launches URLs.
-  url_launcher: ^6.0.9
+  url_launcher: ^6.3.2
 
   # Caches internet images.
-  cached_network_image: ^3.1.0
+  cached_network_image: ^3.3.1
 
   # Tinder cards (a customized version).
   tcard:
     git: https://github.com/skalfa/tcard
 
   # Facebook sign-in library, used with Firebase auth.
-  flutter_facebook_auth: ^7.1.1
+  flutter_facebook_auth: ^7.1.2
 
   # Google sign-in library, used with Firebase auth.
   google_sign_in: ^6.2.2
@@ -43,7 +43,7 @@ dependencies:
   firebase_analytics: ^11.3.6
 
   # Converts HTML to Flutter widgets, used to display HTML content.
-  flutter_html: ^3.0.0-beta.2
+  flutter_html: ^3.0.0
 
   # Toasts for Flutter.
   another_flushbar: ^1.10.24
@@ -61,16 +61,16 @@ dependencies:
   styled_widget: ^0.4.1
 
   # Internet connection state watcher.
-  connectivity_plus: ^6.1.0
+  connectivity_plus: ^6.1.5
 
   # Platform-specific persistent storage wrapper for key-value data.
-  shared_preferences: ^2.0.7
+  shared_preferences: ^2.5.3
 
   # Platform-independent parsing and serialization of HTTP formats.
-  http_parser: ^4.0.2
+  http_parser: ^4.1.2
 
   # HTTP client.
-  dio: ^5.7.0
+  dio: ^5.9.0
 
   # Routing library.
   fluro: ^2.0.3
@@ -79,13 +79,13 @@ dependencies:
   sprintf: ^7.0.0
 
   # Service Locator pattern implementation.
-  get_it: ^8.0.2
+  get_it: ^8.2.0
 
   # Reactive state management library.
-  mobx: ^2.0.4
+  mobx: ^2.5.0
 
   # Flutter integration for MobX.
-  flutter_mobx: ^2.0.2
+  flutter_mobx: ^2.3.0
 
   # JWT decoder.
   jwt_decoder: ^2.0.1
@@ -94,7 +94,7 @@ dependencies:
   flutter_webrtc: ^0.12.2
 
   # Host device information.
-  device_info_plus: ^11.1.1
+  device_info_plus: ^11.5.0
 
   # Host browser detector for Flutter Web.
   browser_detector: ^2.0.0
@@ -112,7 +112,7 @@ dependencies:
   just_audio: ^0.9.7
 
   # Flutter bridge to Sign in with Apple.
-  sign_in_with_apple: ^6.1.3
+  sign_in_with_apple: ^6.1.4
 
   # Implementations of SHA, MD5, and HMAC cryptographic functions.
   crypto: ^3.0.1
@@ -121,7 +121,7 @@ dependencies:
   collection: ^1.18.0
 
   # Deep links and custom URL schemes support.
-  app_links: ^6.3.2
+  app_links: ^6.4.1
 
   # Stores the pushed and popped routes history.
   navigation_history_observer: ^1.1.0
@@ -134,7 +134,7 @@ dependencies:
   mime: ^2.0.0
 
   # Platform-independent native purchases API.
-  in_app_purchase: ^3.2.0
+  in_app_purchase: ^3.2.3
 
   # Native keyboard status watcher.
   flutter_keyboard_visibility: ^6.0.0
@@ -149,28 +149,28 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.3
+  cupertino_icons: ^1.0.6
 
-  in_app_purchase_android: any
-  intl: any
-  html: any
+  in_app_purchase_android: ^0.4.0+3
+  intl: ^0.20.2
+  html: ^0.15.6
   path: ^1.8.3
 
 dev_dependencies:
   # Automatic JSON (de-)serialization code generator.
-  json_serializable: ^6.9.0
+  json_serializable: ^6.10.0
 
   # Launcher icon builder.
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.4
 
   # Flutter native splash screen customization.
-  flutter_native_splash: ^2.4.3
+  flutter_native_splash: ^2.4.6
 
   # Build system for code generation and modular compilation.
-  build_runner: ^2.1.1
+  build_runner: ^2.4.13
 
   # MobX store code generator.
-  mobx_codegen: ^2.0.1+3
+  mobx_codegen: ^2.6.2
 
   flutter_test:
     sdk: flutter

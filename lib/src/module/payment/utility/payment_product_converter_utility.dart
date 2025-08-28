@@ -7,7 +7,7 @@ class PaymentProductConverterUtility {
   /// [PaymentCreditPackModel].
   ///
   /// Throws [FormatException] on failure.
-  static dynamic jsonToProduct(dynamic json) {
+  static Object? jsonToProduct(Object? json) {
     if (!(json is Map)) {
       // If the product could not be found, backend will return empty list
       // instead of empty map due to the PHP JSON serialization algorithm.
@@ -21,11 +21,24 @@ class PaymentProductConverterUtility {
       );
     }
 
+    // Convert to Map<String, Object> safely
+    Map<String, Object?> safeJson = {};
     try {
-      return PaymentMembershipPlanModel.fromJson(json as Map<String, dynamic>);
+      // Convert each key to String and each value to its appropriate type
+      (json as Map).forEach((key, value) {
+        safeJson[key.toString()] = value;
+      });
+    } catch (e) {
+      throw ArgumentError(
+        'Failed to convert Map to Map<String, Object>: ${e.toString()}',
+      );
+    }
+
+    try {
+      return PaymentMembershipPlanModel.fromJson(safeJson);
     } catch (_) {
       try {
-        return PaymentCreditPackModel.fromJson(json as Map<String, dynamic>);
+        return PaymentCreditPackModel.fromJson(safeJson);
       } catch (__) {
         rethrow;
       }
@@ -46,16 +59,31 @@ class PaymentProductConverterUtility {
 
   /// Derives plugin key from the given [productId]. Returns null on failure.
   static String? pluginKeyFromProductId(String productId) {
+    if (productId.isEmpty) {
+      return null;
+    }
+    
     // All product ids look like XXX_XXX_<ID>. We're interested only in the
     // XXX_XXX part.
-    final regex = RegExp(r'(\w+)_\d+$', caseSensitive: false, unicode: true);
+    final regex = RegExp(r'(\w+_\w+)_\d+$', caseSensitive: false, unicode: true);
     final match = regex.firstMatch(productId.toLowerCase());
 
     if (match == null) {
+      // Try alternative pattern without ID
+      if (productId.toLowerCase().contains('membership_plan')) {
+        return 'membership';
+      } else if (productId.toLowerCase().contains('user_credits_pack')) {
+        return 'usercredits';
+      }
       return null;
     }
 
-    switch (match.group(1)) {
+    final productType = match.group(1);
+    if (productType == null) {
+      return null;
+    }
+
+    switch (productType) {
       case 'membership_plan':
         return 'membership';
 

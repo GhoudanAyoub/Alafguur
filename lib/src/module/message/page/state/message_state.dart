@@ -525,7 +525,7 @@ abstract class _MessageState with Store {
       }
 
       // refresh the messages list
-      sortedMessages = messageList as List<MessageModel>;
+      sortedMessages = List<MessageModel>.from(messageList);
       isInitialMessagesUpdating = false;
 
       // notify listeners about new messages

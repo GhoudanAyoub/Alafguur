@@ -3,7 +3,7 @@ class ConverterUtility {
   /// `null`, hence the result is nullable.
   static int? dynamicToNullableInt(dynamic value) {
     if (value == null) {
-      return value;
+      return null;
     }
 
     return value is int ? value : int.parse(value.toString());
@@ -27,7 +27,7 @@ class ConverterUtility {
   /// `null`, hence the result is nullable.
   static double? dynamicToNullableDouble(dynamic value) {
     if (value == null) {
-      return value;
+      return null;
     } else if (value is int) {
       return value.toDouble();
     }
@@ -53,7 +53,7 @@ class ConverterUtility {
 
   static List<int>? dynamicListToInt(List? values) {
     if (values == null) {
-      return values as List<int>?;
+      return null;
     }
 
     return values.map((value) => dynamicToInt(value)).toList();
