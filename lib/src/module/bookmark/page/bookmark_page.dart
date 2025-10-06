@@ -23,8 +23,8 @@ class BookmarkPage extends AbstractPage
     with MatchActionWidgetMixin, DashboardConversationWidgetMixin {
   const BookmarkPage({
     Key? key,
-    required routeParams,
-    required widgetParams,
+    required Map<String, dynamic>? routeParams,
+    required Map<String, dynamic>? widgetParams,
   }) : super(
           key: key,
           routeParams: routeParams,
@@ -38,8 +38,6 @@ class BookmarkPage extends AbstractPage
 class _BookmarkPageState extends State<BookmarkPage>
     with SingleTickerProviderStateMixin {
   late final BookmarkState _state;
-
-  late final SlidableController slidableController = SlidableController(this);
 
   @override
   void initState() {
@@ -90,7 +88,6 @@ class _BookmarkPageState extends State<BookmarkPage>
         itemBuilder: (BuildContext context, int index) {
           return Slidable(
             key: Key(index.toString()),
-            controller: slidableController,
             direction: Axis.horizontal,
             // actionPane: SlidableScrollActionPane(),
             child: userListItemRow(

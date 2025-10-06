@@ -130,7 +130,7 @@ class _PaymentMembershipInfoWidgetState
                 ],
                 replaceParams: [
                   _state.billingCurrency,
-                  plan.price.toString(),
+                  plan.price != null ? plan.price.toString() : '0',
                 ],
               ),
         LocalizationService.of(context).t(
@@ -140,8 +140,8 @@ class _PaymentMembershipInfoWidgetState
             'periodUnits',
           ],
           replaceParams: [
-            plan.period.toString(),
-            plan.periodUnits,
+            plan.period != null ? plan.period.toString() : '0',
+            plan.periodUnits ?? '',
           ],
         ),
         isTrial: plan.price == 0,

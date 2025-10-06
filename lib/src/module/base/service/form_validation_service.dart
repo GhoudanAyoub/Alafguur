@@ -59,11 +59,11 @@ class FormValidatorParams {
 /// ...
 /// validators: [
 ///   FormValidatorModel(
-///     name: SyncValidators.custom,
+///     name: FormSyncValidators.custom,
 ///     params: {
 ///       FormValidatorParams.callback: customSyncValidator,
 ///     },
-///     message: 'my_csutom_lang_key',
+///     message: 'my_custom_lang_key',
 ///   )
 /// ]
 /// ...
@@ -72,14 +72,11 @@ class FormValidatorParams {
 ///
 /// SyncCustomValidatorCallback customSyncValidator() {
 ///   return (dynamic value, Map<String, FormElementModel> elements) {
-///       return $isError ? 'error_string' : null;
+///       return value != null ? null : 'error_string';
 ///   };
 /// }
 ///
-typedef SyncCustomValidatorCallback = String? Function(
-  dynamic value,
-  Map<String, FormElementModel> elements,
-);
+typedef SyncCustomValidatorCallback = String? Function(dynamic value, Map<String, FormElementModel> elements);
 
 /// a callback definition for async custom validators
 ///
@@ -88,11 +85,11 @@ typedef SyncCustomValidatorCallback = String? Function(
 /// ...
 /// asyncValidators: [
 ///   FormAsyncValidatorModel(
-///     name: AsyncValidators.asyncCustom,
+///     name: FormAsyncValidators.asyncCustom,
 ///     params: {
 ///       FormValidatorParams.callback: customAsyncValidator,
-///     }
-///     message: 'my_csutom_asyn_lang_key',
+///     },
+///     message: 'my_custom_async_lang_key',
 ///   )
 /// ]
 /// ...
@@ -104,16 +101,13 @@ typedef SyncCustomValidatorCallback = String? Function(
 ///       // your async action here
 ///       await Future.delayed(const Duration(milliseconds: 1500));
 ///
-///       return $isError ? 'error_string' : null;
+///       return value != null ? null : 'error_string';
 ///   };
 /// }
 ///
-typedef AsyncCustomValidatorCallback = Future<String> Function(
-  dynamic value,
-  Map<String, FormElementModel> elements,
-);
+typedef AsyncCustomValidatorCallback = Future<String?> Function(dynamic value, Map<String, FormElementModel> elements);
 
-/// a delay between validations (which are using for avoid flooding)
+/// a delay between validations (which is used to avoid flooding)
 const VALIDATION_INTERVAL_MILL_SEC = 1000;
 
 const DEFAULT_REQUIRE_ERROR_MESSAGE = 'require_validator_error';
@@ -125,8 +119,7 @@ const DEFAULT_USER_EMAIL_ERROR_MESSAGE = 'user_email_validator_error';
 const DEFAULT_USER_PASSWORD_ERROR_MESSAGE = 'user_password_validator_error';
 const DEFAULT_USER_NAME_ERROR_MESSAGE = 'user_name_validator_error';
 
-const DEFAULT_EMAIL_REGEXP =
-    '^([\w\-\.\+\%]*[\w])@((?:[A-Za-z0-9\-]+\.)+[A-Za-z]{2,})\$';
+const DEFAULT_EMAIL_REGEXP = '^([\w\-\.\+\%]*[\w])@((?:[A-Za-z0-9\-]+\.)+[A-Za-z]{2,})\$';
 
 class FormValidationService {
   final HttpService httpService;
@@ -134,12 +127,9 @@ class FormValidationService {
 
   String? actualEmailRegexp;
 
-  FormValidationService({
-    required this.httpService,
-    required this.authService,
-  });
+  FormValidationService({required this.httpService, required this.authService});
 
-  setEmailRegexp(String? emailRegexp) {
+  FormValidationService setEmailRegexp(String? emailRegexp) {
     actualEmailRegexp = emailRegexp;
 
     return this;
@@ -157,70 +147,65 @@ class FormValidationService {
 
     switch (validatorName) {
       case FormSyncValidators.require:
-        errorMessage = validateRequiredData(
-          value,
-          customErrorMessage ?? DEFAULT_REQUIRE_ERROR_MESSAGE,
-        );
+        errorMessage = validateRequiredData(value, customErrorMessage ?? DEFAULT_REQUIRE_ERROR_MESSAGE);
         break;
 
       case FormSyncValidators.email:
-        errorMessage = validateEmail(
-          value,
-          customErrorMessage ?? DEFAULT_EMAIL_ERROR_MESSAGE,
-        );
+        errorMessage = validateEmail(value, customErrorMessage ?? DEFAULT_EMAIL_ERROR_MESSAGE);
         break;
 
       case FormSyncValidators.number:
-        final int? min = validatorParams?[FormValidatorParams.min] ?? null;
-        final int? max = validatorParams?[FormValidatorParams.max] ?? null;
+        final int? min = validatorParams?[FormValidatorParams.min] as int?;
+        final int? max = validatorParams?[FormValidatorParams.max] as int?;
 
-        errorMessage = validateNumber(
-          value,
-          customErrorMessage ?? DEFAULT_NUMBER_ERROR_MESSAGE,
-          min,
-          max,
-        );
+        final String? stringValue = value as String?;
+        errorMessage = validateNumber(stringValue, customErrorMessage ?? DEFAULT_NUMBER_ERROR_MESSAGE, min, max);
         break;
 
       case FormSyncValidators.maxLength:
-        final int? maxLength =
-            validatorParams?[FormValidatorParams.length] ?? null;
+        final int? maxLength = validatorParams?[FormValidatorParams.length] as int?;
 
         if (maxLength == null) {
           throw ArgumentError('The validator maxLength is not defined');
         }
 
+        final String? stringValue = value as String?;
         errorMessage = validateMaxLength(
-          value,
+          stringValue,
           maxLength,
           customErrorMessage ?? DEFAULT_MAX_LENGTH_ERROR_MESSAGE,
         );
         break;
 
       case FormSyncValidators.minLength:
-        final int? minLength =
-            validatorParams?[FormValidatorParams.length] ?? null;
+        final int? minLength = validatorParams?[FormValidatorParams.length] as int?;
 
         if (minLength == null) {
           throw ArgumentError('The validator minLength is not defined');
         }
 
+        final String? stringValue = value as String?;
         errorMessage = validateMinLength(
-          value,
+          stringValue,
           minLength,
           customErrorMessage ?? DEFAULT_MIN_LENGTH_ERROR_MESSAGE,
         );
         break;
 
       case FormSyncValidators.custom:
-        final callbackFactory =
-            validatorParams?[FormValidatorParams.callback] ?? null;
+        final dynamic callbackFactory = validatorParams?[FormValidatorParams.callback];
 
         if (callbackFactory == null) {
           throw ArgumentError('The validator callback is not defined');
         }
 
-        final SyncCustomValidatorCallback callback = callbackFactory();
+        if (!(callbackFactory is Function)) {
+          throw ArgumentError('Invalid callback factory for sync validator');
+        }
+
+        // Use a function that returns the correct type
+        SyncCustomValidatorCallback Function() typedFactory = callbackFactory as SyncCustomValidatorCallback Function();
+        final SyncCustomValidatorCallback callback = typedFactory();
         errorMessage = callback(value, elements);
         break;
     }
@@ -240,36 +225,36 @@ class FormValidationService {
 
     switch (validatorName) {
       case FormAsyncValidators.asyncCustom:
-        final callbackFactory =
-            validatorParams![FormValidatorParams.callback] ?? null;
+        final dynamic callbackFactory = validatorParams![FormValidatorParams.callback];
 
         if (callbackFactory == null) {
           throw ArgumentError('The async validator callback is not defined');
         }
 
-        final AsyncCustomValidatorCallback callback = callbackFactory();
+        if (!(callbackFactory is Function)) {
+          throw ArgumentError('Invalid callback factory for async validator');
+        }
+
+        // Use a function that returns the correct type
+        AsyncCustomValidatorCallback Function() typedFactory =
+            callbackFactory as AsyncCustomValidatorCallback Function();
+        final AsyncCustomValidatorCallback callback = typedFactory();
         errorMessage = await callback(value, elements);
         break;
 
       case FormAsyncValidators.userEmail:
-        final String? user = validatorParams![FormValidatorParams.user] ??
-            authService.authUser?.name ??
-            null;
+        final String? user = (validatorParams![FormValidatorParams.user] as String?) ?? authService.authUser?.name;
 
-        errorMessage = await validateUserEmail(
-          value,
-          user,
-          customErrorMessage ?? DEFAULT_USER_EMAIL_ERROR_MESSAGE,
-        );
+        final String? email = value as String?;
+        errorMessage = await validateUserEmail(email, user, customErrorMessage ?? DEFAULT_USER_EMAIL_ERROR_MESSAGE);
         break;
 
       case FormAsyncValidators.userPassword:
-        final String? user = validatorParams![FormValidatorParams.user] ??
-            authService.authUser?.name ??
-            null;
+        final String? user = (validatorParams![FormValidatorParams.user] as String?) ?? authService.authUser?.name;
 
+        final String? password = value as String?;
         errorMessage = await validateUserPassword(
-          value,
+          password,
           user,
           customErrorMessage ?? DEFAULT_USER_PASSWORD_ERROR_MESSAGE,
         );
@@ -277,15 +262,10 @@ class FormValidationService {
 
       case FormAsyncValidators.userName:
         final String? oldUserName =
-            validatorParams![FormValidatorParams.oldUserName] ??
-                authService.authUser?.name ??
-                null;
+            (validatorParams![FormValidatorParams.oldUserName] as String?) ?? authService.authUser?.name;
 
-        errorMessage = await validateUserName(
-          value,
-          oldUserName,
-          customErrorMessage ?? DEFAULT_USER_NAME_ERROR_MESSAGE,
-        );
+        final String? name = value as String?;
+        errorMessage = await validateUserName(name, oldUserName, customErrorMessage ?? DEFAULT_USER_NAME_ERROR_MESSAGE);
         break;
     }
 
@@ -293,10 +273,7 @@ class FormValidationService {
   }
 
   /// check if a data is not empty
-  String? validateRequiredData(
-    dynamic value,
-    String error,
-  ) {
+  String? validateRequiredData(dynamic value, String error) {
     // check as a null
     if (value == null) {
       return error;
@@ -316,6 +293,8 @@ class FormValidationService {
       if (isMapValid) {
         return null;
       }
+
+      return error;
     }
 
     // check as a boolean
@@ -342,26 +321,19 @@ class FormValidationService {
   }
 
   /// check if a string is a correct email
-  String? validateEmail(
-    String? value,
-    String error,
-  ) {
-    if (value == null) {
+  String? validateEmail(dynamic value, String error) {
+    final String? emailValue = value as String?;
+    if (emailValue == null) {
       return null;
     }
 
     final regex = RegExp((actualEmailRegexp ?? DEFAULT_EMAIL_REGEXP));
 
-    return value.isNotEmpty && regex.hasMatch(value) ? null : error;
+    return emailValue.isNotEmpty && regex.hasMatch(emailValue) ? null : error;
   }
 
   /// check if a string is a correct number
-  String? validateNumber(
-    String? value,
-    String error,
-    int? minValue,
-    int? maxValue,
-  ) {
+  String? validateNumber(String? value, String error, int? minValue, int? maxValue) {
     if (value == null) {
       return null;
     }
@@ -383,12 +355,8 @@ class FormValidationService {
     return null;
   }
 
-  /// check if a string is not to big
-  String? validateMaxLength(
-    String? value,
-    int maxLength,
-    String error,
-  ) {
+  /// check if a string is not too big
+  String? validateMaxLength(String? value, int maxLength, String error) {
     if (value == null) {
       return null;
     }
@@ -396,12 +364,8 @@ class FormValidationService {
     return value.isNotEmpty && value.trim().length > maxLength ? error : null;
   }
 
-  /// check if a string is not to small
-  String? validateMinLength(
-    String? value,
-    int minLength,
-    String error,
-  ) {
+  /// check if a string is not too small
+  String? validateMinLength(String? value, int minLength, String error) {
     if (value == null) {
       return null;
     }
@@ -410,60 +374,45 @@ class FormValidationService {
   }
 
   /// validate user email
-  Future<String?> validateUserEmail(
-    String? userEmail,
-    String? user,
-    String error,
-  ) async {
-    Map<String, dynamic> queryParams = {'email': userEmail};
-
+  Future<String?> validateUserEmail(String? email, String? user, String error) async {
+    // Create a map with the correct type
+    final requestData = <String, dynamic>{};
+    requestData['email'] = email;
     if (user != null) {
-      queryParams = {...queryParams, 'user': user};
+      requestData['user'] = user;
     }
 
-    final result = ValidatorResponse.fromJson(
-      await this.httpService.post(
-            'validators/user-email',
-            data: queryParams,
-          ),
-    );
+    final responseData = await httpService.post('validators/user-email', data: requestData) as Map<String, dynamic>;
 
+    final result = ValidatorResponse.fromJson(responseData);
     return result.valid != true ? error : null;
   }
 
   /// validate user password
-  Future<String?> validateUserPassword(
-    String? userPassword,
-    String? user,
-    String error,
-  ) async {
-    Map<String, dynamic> queryParams = {'password': userPassword, 'user': user};
-    final result = ValidatorResponse.fromJson(
-      await this.httpService.post(
-            'validators/user-password',
-            data: queryParams,
-          ),
-    );
+  Future<String?> validateUserPassword(String? password, String? user, String error) async {
+    // Create a map with the correct type
+    final requestData = <String, dynamic>{};
+    requestData['password'] = password;
+    requestData['user'] = user;
 
+    final responseData = await httpService.post('validators/user-password', data: requestData) as Map<String, dynamic>;
+
+    final result = ValidatorResponse.fromJson(responseData);
     return result.valid != true ? error : null;
   }
 
   /// validate user name
-  Future<String?> validateUserName(
-    String? userName,
-    String? oldUserName,
-    String error,
-  ) async {
-    Map<String, dynamic> queryParams = {'userName': userName};
-
+  Future<String?> validateUserName(String? name, String? oldUserName, String error) async {
+    // Create a map with the correct type
+    final requestData = <String, dynamic>{};
+    requestData['userName'] = name;
     if (oldUserName != null) {
-      queryParams = {...queryParams, 'oldUserName': oldUserName};
+      requestData['oldUserName'] = oldUserName;
     }
 
-    final result = ValidatorResponse.fromJson(
-      await this.httpService.post('validators/user-name', data: queryParams),
-    );
+    final responseData = await httpService.post('validators/user-name', data: requestData) as Map<String, dynamic>;
 
+    final result = ValidatorResponse.fromJson(responseData);
     return result.valid != true ? error : null;
   }
 }

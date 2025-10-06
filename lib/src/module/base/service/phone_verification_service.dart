@@ -27,7 +27,7 @@ class PhoneVerificationService {
       'userId': authService.authUser?.id,
     });
 
-    return ValidatorResponse.fromJson(result);
+    return ValidatorResponse.fromJson(result as Map<String, dynamic>);
   }
 
   Future<GenericResponseModel> verifyPhoneNumber(
@@ -39,22 +39,22 @@ class PhoneVerificationService {
       'phoneNumber': phoneNumber,
     });
 
-    return GenericResponseModel.fromJson(result);
+    return GenericResponseModel.fromJson(result as Map<String, dynamic>);
   }
 
   Future<List<PhoneCountryModel>> loadPhoneCountries() async {
     final List<dynamic> countries =
-        await this.httpService.get('sms-verifications/countries');
+        await this.httpService.get('sms-verifications/countries') as List<dynamic>;
 
     return countries
         .map<PhoneCountryModel>(
-            (country) => PhoneCountryModel.fromJson(country))
+            (country) => PhoneCountryModel.fromJson(country as Map<String, dynamic>))
         .toList();
   }
 
   Future<UserPhoneModel> loadMyPhone() async {
     return UserPhoneModel.fromJson(
-      await this.httpService.get('sms-verifications/phones/me'),
+      (await this.httpService.get('sms-verifications/phones/me')) as Map<String, dynamic>,
     );
   }
 
@@ -82,8 +82,8 @@ class PhoneVerificationService {
     ];
 
     final List response = await Future.wait(loadingResources);
-    final List<PhoneCountryModel> phoneCountryList = response[0];
-    final UserPhoneModel userPhone = response[1];
+    final List<PhoneCountryModel> phoneCountryList = response[0] as List<PhoneCountryModel>;
+    final UserPhoneModel userPhone = response[1] as UserPhoneModel;
 
     return [
       FormElementModel(

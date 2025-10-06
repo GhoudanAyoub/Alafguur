@@ -13,6 +13,6 @@ class GoogleLocationService {
       queryParameters: {
         'q': keyword,
       },
-    );
+    ) as List?;
   }
 }

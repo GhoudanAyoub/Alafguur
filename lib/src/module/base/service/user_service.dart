@@ -19,7 +19,7 @@ class UserService {
 
   /// load the logged in user's data
   Future<UserModel> loadMe(bool isPhotoPluginAvaialble) async {
-    final List params = ['avatar', 'permissions'];
+    final List<String> params = ['avatar', 'permissions'];
 
     if (isPhotoPluginAvaialble) {
       params.add('photos');
@@ -32,7 +32,7 @@ class UserService {
       },
     );
 
-    return UserModel.fromJson(result);
+    return UserModel.fromJson(result as Map<String, dynamic>);
   }
 
   /// update the logged in user's data
@@ -42,7 +42,7 @@ class UserService {
       data: user.toJson(),
     );
 
-    return UserModel.fromJson(result);
+    return UserModel.fromJson(result as Map<String, dynamic>);
   }
 
   /// update the logged in user's questions
@@ -50,7 +50,7 @@ class UserService {
     List<FormElementModel?> updatedValues, {
     bool isCompleteMode = true,
   }) async {
-    List questions = updatedValues.map(
+    List<Map<String, dynamic>> questions = updatedValues.map(
       (formElementModel) {
         return {
           'name': formElementModel!.key,
@@ -66,29 +66,32 @@ class UserService {
           }
         : {};
 
-    final List result = await httpService.put(
+    final dynamic responseData = await httpService.put(
       'questions-data/me',
       data: questions,
       queryParameters: params,
     );
+    
+    final List<dynamic> result = responseData as List<dynamic>;
 
     // refresh the auth token if it exists
-    result.forEach((question) {
-      final Map questionsParams =
-          question['params'] != null ? question['params'] : {};
+    result.forEach((dynamic question) {
+      final Map<String, dynamic> questionsParams =
+          question['params'] != null ? question['params'] as Map<String, dynamic> : <String, dynamic>{};
 
       if (questionsParams.containsKey('token')) {
-        authService.setAuthenticated(questionsParams['token']);
+        authService.setAuthenticated(questionsParams['token'] as String);
       }
     });
   }
 
   /// load available genders
   Future<List<UserGenderModel>> loadGenders() async {
-    final List<dynamic> genders = await this.httpService.get('user-genders');
+    final dynamic response = await httpService.get('user-genders');
+    final List<dynamic> genders = response as List<dynamic>;
 
     return genders
-        .map<UserGenderModel>((gender) => UserGenderModel.fromJson(gender))
+        .map<UserGenderModel>((dynamic gender) => UserGenderModel.fromJson(gender as Map<String, dynamic>))
         .toList();
   }
 
@@ -114,30 +117,30 @@ class UserService {
 
   /// block a user
   Future<void> blockUser(int? userId) async {
-    return this.httpService.post('users/blocks/$userId');
+    return httpService.post('users/blocks/$userId');
   }
 
   /// unblock a user
   Future<void> unblockUser(int? userId) async {
-    return this.httpService.delete('users/blocks/$userId');
+    return httpService.delete('users/blocks/$userId');
   }
 
   /// redirect to subscribe
   Future<bool> redirectToSubscribe() async {
-    final result = await httpService.get(
+    final dynamic result = await httpService.get(
       'users/redirect-to-subscribe/${authService.authUser!.id}',
     );
 
-    return result;
+    return result as bool;
   }
 
   /// showing popup
   Future<bool> showingPopup() async {
-    final result = await httpService.get(
+    final dynamic result = await httpService.get(
       'users/showing-popup/${authService.authUser!.id}',
     );
 
-    return result;
+    return result as bool;
   }
 
 }

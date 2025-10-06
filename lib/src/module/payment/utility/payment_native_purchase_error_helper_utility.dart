@@ -41,8 +41,19 @@ class PaymentNativePurchaseErrorHelperUtility {
     }
 
     try {
-      final details = (purchase.error?.details as Map);
-      final error = (details['NSUnderlyingError'] as Map);
+      if (purchase.error?.details is! Map) {
+        return false;
+      }
+      
+      final details = purchase.error!.details as Map;
+      if (!details.containsKey('NSUnderlyingError') || details['NSUnderlyingError'] is! Map) {
+        return false;
+      }
+      
+      final error = details['NSUnderlyingError'] as Map;
+      if (!error.containsKey('code') || error['code'] is! int) {
+        return false;
+      }
 
       return (error['code'] as int) ==
           _PaymentNativePurchaseIosErrorCodes.termsAndConditionsChanged;
@@ -67,9 +78,31 @@ class PaymentNativePurchaseErrorHelperUtility {
     // This rather contrived parsing algorithm determines whether the user
     // has cancelled the purchase flow or it's some other kind of error.
     try {
-      final errorDetails = (purchase.error?.details as Map);
-      final userInfo = (errorDetails['NSUnderlyingError']['userInfo']! as Map);
-      final errorCode = (userInfo['NSUnderlyingError']['code'] as int);
+      if (purchase.error?.details is! Map) {
+        return false;
+      }
+      
+      final errorDetails = purchase.error!.details as Map;
+      if (!errorDetails.containsKey('NSUnderlyingError') || 
+          errorDetails['NSUnderlyingError'] is! Map ||
+          !(errorDetails['NSUnderlyingError'] as Map).containsKey('userInfo')) {
+        return false;
+      }
+      
+      final userInfoObj = errorDetails['NSUnderlyingError']['userInfo'];
+      if (userInfoObj == null || userInfoObj is! Map) {
+        return false;
+      }
+      
+      final userInfo = userInfoObj as Map;
+      if (!userInfo.containsKey('NSUnderlyingError') || 
+          userInfo['NSUnderlyingError'] is! Map ||
+          !(userInfo['NSUnderlyingError'] as Map).containsKey('code') ||
+          (userInfo['NSUnderlyingError'] as Map)['code'] is! int) {
+        return false;
+      }
+      
+      final errorCode = userInfo['NSUnderlyingError']['code'] as int;
 
       return errorCode == _PaymentNativePurchaseIosErrorCodes.cancelledByUser;
     } catch (_) {

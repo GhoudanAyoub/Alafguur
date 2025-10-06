@@ -63,3 +63,6 @@ config/application.config
 config/theme.config
 *.sw-merge.js
 firebase-messaging-sw.js
+
+# FVM Version Cache
+.fvm/

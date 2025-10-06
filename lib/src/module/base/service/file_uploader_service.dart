@@ -95,7 +95,7 @@ class FileUploaderService {
     PlatformFile? file, {
     String? contentType,
     double maxUploadSize = -1,
-    Map? data,
+    Map<String, dynamic>? data,
   }) {
     if (kIsWeb) {
       assert(file!.bytes != null);
@@ -167,7 +167,7 @@ class FileUploaderService {
     String? filename, {
     String? contentType,
     double maxUploadSize = -1,
-    Map? data,
+    Map<String, dynamic>? data,
   }) {
     if (maxUploadSize > 0 && (bytes.lengthInBytes > maxUploadSize)) {
       throw FileIsTooLargeException(
@@ -205,7 +205,7 @@ class FileUploaderService {
     String? filename,
     String? contentType,
     double maxUploadSize = -1,
-    Map? data,
+    Map<String, dynamic>? data,
   }) async {
     final file = File(path);
 

@@ -10,6 +10,8 @@ import '../../../../app/utility/fake_dart_html_utility.dart'
 import '../../../base/page/state/root_state.dart';
 import '../../../base/service/model/generic_response_model.dart';
 import '../../service/model/payment_billing_gateway_model.dart';
+import '../../service/model/payment_credit_pack_model.dart';
+import '../../service/model/payment_membership_plan_model.dart';
 import '../../service/model/payment_sale_initialization_response_model.dart';
 import '../../service/payment_service.dart';
 import '../../utility/payment_product_converter_utility.dart';
@@ -109,9 +111,34 @@ abstract class _PaymentBillingGatewaysState with Store {
   ) {
     isPaymentInProgress = true;
 
-    final pluginKey = PaymentProductConverterUtility.pluginKeyFromProductId(
-      product.productId,
-    );
+    // Safely access productId with proper type checking
+    String productIdStr = '';
+    if (product != null) {
+      try {
+        // Check if product has a productId property that can be converted to string
+        final productId = product['productId'] ?? product.productId;
+        if (productId != null) {
+          productIdStr = productId.toString();
+        } else {
+          // If productId is null, try to use id instead
+          final id = product['id'] ?? product.id;
+          if (id != null) {
+            productIdStr = id.toString();
+          }
+        }
+      } catch (e) {
+        // Handle case where product doesn't have expected structure
+        isPaymentInProgress = false;
+        return Future.value(null);
+      }
+    }
+
+    if (productIdStr.isEmpty) {
+      isPaymentInProgress = false;
+      return Future.value(null);
+    }
+
+    final pluginKey = PaymentProductConverterUtility.pluginKeyFromProductId(productIdStr);
 
     if (pluginKey == null) {
       isPaymentInProgress = false;
@@ -135,7 +162,7 @@ abstract class _PaymentBillingGatewaysState with Store {
     final form = document.createElement('form') as FormElement;
 
     form.id = 'app-order-form-${sale.saleId}';
-    form.action = formElements['form_action_url'];
+    form.action = formElements['form_action_url'].toString();
     form.method = 'post';
 
     formElements.forEach(
@@ -144,7 +171,7 @@ abstract class _PaymentBillingGatewaysState with Store {
 
         input.type = 'hidden';
         input.name = key.toString();
-        input.value = value.toString();
+        input.value = value != null ? value.toString() : '';
 
         form.append(input);
       },

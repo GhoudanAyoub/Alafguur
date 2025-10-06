@@ -3,8 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../../../app/utility/converter_utility.dart';
 import 'user_view_question_item_model.dart';
 
-part 'user_view_question_model.g.dart';
-
 @JsonSerializable()
 class UserViewQuestionModel {
   @JsonKey(required: true)
@@ -22,8 +20,24 @@ class UserViewQuestionModel {
     required this.items,
   });
 
-  factory UserViewQuestionModel.fromJson(Map<String, dynamic> json) =>
-      _$UserViewQuestionModelFromJson(json);
+  factory UserViewQuestionModel.fromJson(Map<String, dynamic> json) {
+    // Manually create the model since the generated code has issues
+    return UserViewQuestionModel(
+      order: json['order'] as int,
+      section: json['section'] as String,
+      items: (json['items'] as List<dynamic>?)
+              ?.map((e) => UserViewQuestionItemModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$UserViewQuestionModelToJson(this);
+  Map<String, dynamic> toJson() {
+    // Manually create the JSON since the generated code has issues
+    return {
+      'order': order,
+      'section': section,
+      'items': ConverterUtility.modelListToJsonList(items),
+    };
+  }
 }

@@ -24,7 +24,21 @@ class ResetPasswordService {
       },
     );
 
-    return GenericResponseModel.fromJson(result);
+    if (result is! Map) {
+      throw FormatException('Expected Map response, got ${result.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResult = {};
+    try {
+      result.forEach((key, value) {
+        safeResult[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+
+    return GenericResponseModel.fromJson(safeResult);
   }
 
   /// Validate password reset verification [code].
@@ -36,7 +50,21 @@ class ResetPasswordService {
       },
     );
 
-    return ValidatorResponse.fromJson(result);
+    if (result is! Map) {
+      throw FormatException('Expected Map response, got ${result.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResult = {};
+    try {
+      result.forEach((key, value) {
+        safeResult[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+
+    return ValidatorResponse.fromJson(safeResult);
   }
 
   /// Fulfill the password reset request.
@@ -51,7 +79,21 @@ class ResetPasswordService {
       },
     );
 
-    return GenericResponseModel.fromJson(result);
+    if (result is! Map) {
+      throw FormatException('Expected Map response, got ${result.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResult = {};
+    try {
+      result.forEach((key, value) {
+        safeResult[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+
+    return GenericResponseModel.fromJson(safeResult);
   }
 
   /// Get check email form elements.

@@ -24,9 +24,23 @@ class PaymentService {
 
   /// Load products for native purchases.
   Future<PaymentNativeProductsModel> loadNativeProducts() async {
-    return PaymentNativeProductsModel.fromJson(
-      await httpService.get('inapps/products'),
-    );
+    final response = await httpService.get('inapps/products');
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentNativeProductsModel.fromJson(safeResponse);
   }
 
   /// Validate the given native [purchase]. If the purchase represents a
@@ -46,7 +60,21 @@ class PaymentService {
       },
     );
 
-    return PaymentNativePurchaseValidationResultModel.fromJson(result);
+    if (result is! Map) {
+      throw FormatException('Expected Map response, got ${result.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResult = {};
+    try {
+      result.forEach((key, value) {
+        safeResult[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentNativePurchaseValidationResultModel.fromJson(safeResult);
   }
 
   /// Initialize purchase of the given [product]. The [product] can be either
@@ -62,69 +90,187 @@ class PaymentService {
     String pluginKey,
   ) async {
     if (!PaymentProductValidatorUtility.validateProductType(product)) {
-      throw new ArgumentError(
+      throw ArgumentError(
         'Invalid product type, either PaymentMembershipPlanModel or PaymentCreditPackModel expected, ${product.runtimeType} given',
       );
     }
 
-    return PaymentSaleInitializationResponseModel.fromJson(
-      await httpService.post(
-        'mobile-billings/inits',
-        data: {
-          'product': product.toJson(),
-          'gatewayKey': gatewayName,
-          'pluginKey': pluginKey,
-        },
-      ),
+    final response = await httpService.post(
+      'mobile-billings/inits',
+      data: {
+        'product': product.toJson(),
+        'gatewayKey': gatewayName,
+        'pluginKey': pluginKey,
+      },
     );
+
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentSaleInitializationResponseModel.fromJson(safeResponse);
   }
 
   /// Load membership levels available for purchase.
   Future<Iterable<PaymentMembershipModel>> loadMemberships() async {
-    return (await httpService.get('memberships') as List).map(
-      (membershipRaw) => PaymentMembershipModel.fromJson(membershipRaw),
-    );
+    final response = await httpService.get('memberships');
+    
+    if (response is! List) {
+      throw FormatException('Expected List response, got ${response.runtimeType}');
+    }
+    
+    return response.map((membershipRaw) {
+      if (membershipRaw is! Map) {
+        throw FormatException('Expected Map item in list, got ${membershipRaw.runtimeType}');
+      }
+      
+      // Convert to Map<String, dynamic> safely
+      Map<String, dynamic> safeMembershipRaw = {};
+      try {
+        membershipRaw.forEach((key, value) {
+          safeMembershipRaw[key.toString()] = value;
+        });
+      } catch (e) {
+        throw FormatException('Failed to convert item to Map<String, dynamic>: ${e.toString()}');
+      }
+      
+      return PaymentMembershipModel.fromJson(safeMembershipRaw);
+    });
   }
 
   /// Load information about a membership level by its [id].
+  /// 
+  /// Returns detailed information about a specific membership level.
   Future<PaymentMembershipModel> loadMembership(int id) async {
-    return PaymentMembershipModel.fromJson(
-      await httpService.get('memberships/$id'),
-    );
+    final response = await httpService.get('memberships/$id');
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentMembershipModel.fromJson(safeResponse);
   }
 
   /// Load credit packs.
+  /// 
+  /// Returns information about available credit packs for purchase.
   Future<PaymentCreditsModel> loadCreditPacksData() async {
-    return PaymentCreditsModel.fromJson(await httpService.get('credits'));
+    final response = await httpService.get('credits');
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentCreditsModel.fromJson(safeResponse);
   }
 
   /// Load credit actions cost info.
+  /// 
+  /// Returns information about the cost of various credit actions.
   Future<PaymentCreditActionsInfoModel> loadCreditsInfo() async {
-    return PaymentCreditActionsInfoModel.fromJson(
-      await httpService.get('credits/info'),
-    );
+    final response = await httpService.get('credits/info');
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentCreditActionsInfoModel.fromJson(safeResponse);
   }
 
   /// Load billing gateways list.
   Future<Iterable<PaymentBillingGatewayModel>> loadBillingGateways() async {
-    return (await httpService.get('billing-gateways') as List).map(
-      (billingGatewayRaw) => PaymentBillingGatewayModel.fromJson(
-        billingGatewayRaw,
-      ),
-    );
+    final response = await httpService.get('billing-gateways');
+    
+    if (response is! List) {
+      throw FormatException('Expected List response, got ${response.runtimeType}');
+    }
+    
+    return response.map((billingGatewayRaw) {
+      if (billingGatewayRaw is! Map) {
+        throw FormatException('Expected Map item in list, got ${billingGatewayRaw.runtimeType}');
+      }
+      
+      // Convert to Map<String, dynamic> safely
+      Map<String, dynamic> safeBillingGatewayRaw = {};
+      try {
+        billingGatewayRaw.forEach((key, value) {
+          safeBillingGatewayRaw[key.toString()] = value;
+        });
+      } catch (e) {
+        throw FormatException('Failed to convert item to Map<String, dynamic>: ${e.toString()}');
+      }
+      
+      return PaymentBillingGatewayModel.fromJson(safeBillingGatewayRaw);
+    });
   }
 
   /// Load billing gateways list and product data for the given [productId].
+  /// 
+  /// Returns billing gateways information along with specific product data.
   Future<PaymentBillingGatewaysProductDataModel>
       loadBillingGatewaysWithProductData(String productId) async {
-    return PaymentBillingGatewaysProductDataModel.fromJson(
-      await httpService.get(
-        'billing-gateways/with-product',
-        queryParameters: {
-          'id': productId,
-        },
-      ),
+    final response = await httpService.get(
+      'billing-gateways/with-product',
+      queryParameters: {
+        'id': productId,
+      },
     );
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentBillingGatewaysProductDataModel.fromJson(safeResponse);
   }
 
   /// Prepare the given PayPal [sale] and load its form fields.
@@ -135,10 +281,26 @@ class PaymentService {
       '/mobile-billings/prepare/paypal/${sale.saleId}',
     );
 
-    return result as Map<String, dynamic>;
+    if (result is! Map) {
+      throw FormatException('Expected Map response, got ${result.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResult = {};
+    try {
+      result.forEach((key, value) {
+        safeResult[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return safeResult;
   }
 
   /// Prepare the given Stripe [sale] and get the related Stripe checkout URL.
+  /// 
+  /// Returns the Stripe checkout URL and other necessary information.
   Future<PaymentStripeSalePreparationResponseModel> prepareStripeSale(
     PaymentSaleInitializationResponseModel sale,
   ) async {
@@ -146,22 +308,55 @@ class PaymentService {
       '/mobile-billings/prepare/stripe/${sale.saleId}',
     );
 
-    return PaymentStripeSalePreparationResponseModel.fromJson(result);
+    if (result is! Map) {
+      throw FormatException('Expected Map response, got ${result.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResult = {};
+    try {
+      result.forEach((key, value) {
+        safeResult[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return PaymentStripeSalePreparationResponseModel.fromJson(safeResult);
   }
 
   /// Set the given [sale] status to `error`.
+  /// 
+  /// Marks a sale as having an error, preventing further processing.
   Future<GenericResponseModel> markAsError(
     PaymentSaleInitializationResponseModel sale,
   ) async {
-    return GenericResponseModel.fromJson(
-      await httpService.post('/mobile-billings/mark-as-error/${sale.saleId}'),
+    final response = await httpService.post(
+      '/mobile-billings/mark-as-error/${sale.saleId}',
     );
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
+    
+    return GenericResponseModel.fromJson(safeResponse);
   }
 
   /// Grant trial membership plan identified by the provided [planId] to the
   /// active user.
   ///
   /// Returns empty response on success, throws [ServerException] on failure.
+  /// This method doesn't require type casting as it returns the raw response.
   Future<dynamic> grantTrialMembershipPlan(int planId) {
     return httpService.post('memberships/trial/$planId');
   }

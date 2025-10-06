@@ -36,7 +36,7 @@ abstract class _BookmarkState with Store {
     final List? bookmarks = await bookmarkProfileService.loadBookmarks();
 
     bookmarkUsers =
-        bookmarks!.map((bookmark) => BookmarkModel.fromJson(bookmark)).toList();
+        bookmarks!.map((bookmark) => BookmarkModel.fromJson(bookmark as Map<String, dynamic>)).toList();
 
     if (dashboardUserState.isUserLoaded) {
       isPageLoaded = true;

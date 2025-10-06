@@ -10,8 +10,6 @@ import 'user_photo_model.dart';
 import 'user_view_question_model.dart';
 import 'video_im_call_permission_model.dart';
 
-part 'user_model.g.dart';
-
 @JsonSerializable()
 class UserModel {
   @JsonKey(includeIfNull: false, fromJson: ConverterUtility.dynamicToInt)
@@ -115,8 +113,88 @@ class UserModel {
       json['sex'] = json['sex'].first;
     }
 
-    return _$UserModelFromJson(json);
+    // Manually create the model since the generated code has issues
+    return UserModel(
+      id: ConverterUtility.dynamicToInt(json['id']),
+      userName: json['userName'] as String?,
+      isOnline: json['isOnline'] as bool?,
+      age: ConverterUtility.dynamicToInt(json['age']),
+      aboutMe: json['aboutMe'] as String?,
+      distance: json['distance'] != null
+          ? UserDistanceModel.fromJson(json['distance'] as Map<String, dynamic>)
+          : null,
+      sex: ConverterUtility.dynamicToInt(json['sex']),
+      password: json['password'] as String?,
+      email: json['email'] as String?,
+      lookingFor: ConverterUtility.dynamicListToInt(json['lookingFor']),
+      avatarKey: json['avatarKey'] as String?,
+      avatar: json['avatar'] != null
+          ? UserAvatarModel.fromJson(json['avatar'] as Map<String, dynamic>)
+          : null,
+      bookmark: json['bookmark'] != null
+          ? UserBookmarkModel.fromJson(json['bookmark'] as Map<String, dynamic>)
+          : null,
+      matchAction: json['matchAction'] != null
+          ? UserMatchActionModel.fromJson(
+              json['matchAction'] as Map<String, dynamic>)
+          : null,
+      videoImCallPermission: json['videoImCallPermission'] != null
+          ? VideoImCallPermissionModel.fromJson(
+              json['videoImCallPermission'] as Map<String, dynamic>)
+          : null,
+      token: json['token'] as String?,
+      compatibility: json['compatibility'] as int?,
+      type: json['type'] as String?,
+      isAdmin: json['isAdmin'] as bool?,
+      isBlocked: json['isBlocked'] as bool?,
+      permissions: (json['permissions'] as List<dynamic>?)
+          ?.map((e) => UserPermissionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      viewQuestions: (json['viewQuestions'] as List<dynamic>?)
+          ?.map((e) => UserViewQuestionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      photos: (json['photos'] as List<dynamic>?)
+          ?.map((e) => UserPhotoModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
   }
 
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  Map<String, dynamic> toJson() {
+    // Manually create the JSON since the generated code has issues
+    final Map<String, dynamic> json = {};
+    
+    if (id != null) json['id'] = id;
+    if (userName != null) json['userName'] = userName;
+    if (isOnline != null) json['isOnline'] = isOnline;
+    if (age != null) json['age'] = age;
+    if (aboutMe != null) json['aboutMe'] = aboutMe;
+    if (distance != null) json['distance'] = ConverterUtility.modelToJson(distance);
+    if (sex != null) json['sex'] = sex;
+    if (password != null) json['password'] = password;
+    if (email != null) json['email'] = email;
+    if (lookingFor != null) json['lookingFor'] = lookingFor;
+    if (avatarKey != null) json['avatarKey'] = avatarKey;
+    if (avatar != null) json['avatar'] = ConverterUtility.modelToJson(avatar);
+    json['bookmark'] = ConverterUtility.modelToJson(bookmark);
+    json['matchAction'] = ConverterUtility.modelToJson(matchAction);
+    if (videoImCallPermission != null) {
+      json['videoImCallPermission'] = ConverterUtility.modelToJson(videoImCallPermission);
+    }
+    if (token != null) json['token'] = token;
+    if (compatibility != null) json['compatibility'] = compatibility;
+    if (type != null) json['type'] = type;
+    if (isAdmin != null) json['isAdmin'] = isAdmin;
+    if (isBlocked != null) json['isBlocked'] = isBlocked;
+    if (permissions != null) {
+      json['permissions'] = ConverterUtility.modelListToJsonList(permissions);
+    }
+    if (viewQuestions != null) {
+      json['viewQuestions'] = ConverterUtility.modelListToJsonList(viewQuestions);
+    }
+    if (photos != null) {
+      json['photos'] = ConverterUtility.modelListToJsonList(photos);
+    }
+    
+    return json;
+  }
 }

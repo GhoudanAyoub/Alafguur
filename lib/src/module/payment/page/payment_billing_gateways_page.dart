@@ -49,7 +49,7 @@ class _PaymentBillingGatewaysPageState
     _state.setOnProductNotFoundCallback(_showProductNotFoundAlert);
 
     _state.init(
-      productId: widget.routeParams!['productId'][0],
+      productId: widget.routeParams!['productId'][0].toString(),
       loadProduct: loadProduct,
     );
   }

@@ -14,25 +14,54 @@ class LoginService {
     required this.httpService,
   });
 
-  /// login a user
-  Future<String?> login(Map credentials) async {
+  /// Login a user with username and password
+  /// 
+  /// Returns the authentication token if login is successful, null otherwise
+  Future<String?> login(Map<String, dynamic> credentials) async {
     final response = await httpService.post(
       'login',
       data: credentials,
     );
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
 
-    if (response['token'] != null) {
-      return response['token'];
+    if (safeResponse['token'] != null) {
+      final token = safeResponse['token'];
+      if (token is String) {
+        return token;
+      }
     }
 
     return null;
   }
 
-  /// login a user
+  /// Login a user with Firebase credentials
+  /// 
+  /// Returns the authentication token if login is successful, null otherwise
   Future<String?> firebaseLogin(UserCredential userCredential) async {
-    String? userPhoneNumber = userCredential.user!.phoneNumber ??
-        userCredential.additionalUserInfo!.profile!['phoneNumber'] ??
-        null;
+    // Safely extract phone number with proper type checking
+    String? userPhoneNumber = userCredential.user!.phoneNumber;
+    
+    if (userPhoneNumber == null && 
+        userCredential.additionalUserInfo?.profile != null && 
+        userCredential.additionalUserInfo!.profile!.containsKey('phoneNumber')) {
+      final phoneNumberValue = userCredential.additionalUserInfo!.profile!['phoneNumber'];
+      if (phoneNumberValue is String) {
+        userPhoneNumber = phoneNumberValue;
+      }
+    }
 
     final idToken = await userCredential.user!.getIdToken();
 
@@ -47,9 +76,26 @@ class LoginService {
       'firebase/login',
       data: data,
     );
+    
+    if (response is! Map) {
+      throw FormatException('Expected Map response, got ${response.runtimeType}');
+    }
+    
+    // Convert to Map<String, dynamic> safely
+    Map<String, dynamic> safeResponse = {};
+    try {
+      response.forEach((key, value) {
+        safeResponse[key.toString()] = value;
+      });
+    } catch (e) {
+      throw FormatException('Failed to convert response to Map<String, dynamic>: ${e.toString()}');
+    }
 
-    if (response['token'] != null) {
-      return response['token'];
+    if (safeResponse['token'] != null) {
+      final token = safeResponse['token'];
+      if (token is String) {
+        return token;
+      }
     }
 
     return null;
